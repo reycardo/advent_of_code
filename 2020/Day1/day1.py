@@ -1,9 +1,15 @@
+import os
 import sys
 sys.path.insert(0, './')
 from utils import tools
 
-input_raw = r'2020\Day1\input.txt'
-test_raw = r'2020\Day1\test.txt'
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+input_raw = os.path.join(__location__,'input.txt')
+test_raw = os.path.join(__location__,'test.txt')
+
+#########
+# Start #
+#########
 
 def main(raw,part):
     # read inputs from file
@@ -11,11 +17,12 @@ def main(raw,part):
     
     # convert to all elements int
     input = [int(i) for i in input if i]
-
-    # return a*b if a+b=2020 for any a,b in input
+    
     if part == 1:
+        # return a*b if a+b=2020 for any a,b in input
         return [a*b for a in input for b in input if a+b==2020][0]
     elif part == 2:
+        # return a*b*c if a+b+c=2020 for any a,b,c in input
         return [a*b*c for a in input for b in input for c in input if a+b+c==2020][0]
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
