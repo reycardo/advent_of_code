@@ -5,7 +5,7 @@ from utils import tools
 input_raw = r'2020\Day1\input.txt'
 test_raw = r'2020\Day1\test.txt'
 
-def main1(raw):
+def main(raw,part):
     # read inputs from file
     input = tools.read_input(raw)
     
@@ -13,13 +13,22 @@ def main1(raw):
     input = [int(i) for i in input if i]
 
     # return a*b if a+b=2020 for any a,b in input
-    return [a*b for a in input for b in input if a+b==2020][0]
+    if part == 1:
+        return [a*b for a in input for b in input if a+b==2020][0]
+    elif part == 2:
+        return [a*b*c for a in input for b in input for c in input if a+b+c==2020][0]
+    else:
+        raise ValueError("part must be 1 or 2, instead of: " + part)
+
 
 def run_tests():
-    assert main1(test_raw) == 514579
+    assert main(test_raw,1) == 514579
+    assert main(test_raw,2) == 241861950
 
     
 if __name__ == '__main__':
     run_tests()
-    answer = main1(input_raw)
-    print(answer)
+    answer1 = main(input_raw,1)
+    answer2 = main(input_raw,2)    
+    print("Answer part1: {}".format(answer1))
+    print("Answer part2: {}".format(answer2))
