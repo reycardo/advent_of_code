@@ -2,6 +2,7 @@ import re
 import os
 import sys
 sys.path.insert(0, './')
+from utils import tools
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 input_raw = os.path.join(__location__,'input.txt')
@@ -15,12 +16,6 @@ raw = r'2020\Day4\test_valid.txt'
 #########
 # Start #
 #########
-
-def read_input(file):
-    with open(file, "r") as tf:        
-        input = tf.read().split('\n\n')
-        return [passport.split() for passport in input]
-
 
 def fields_2_dict(passport):    
     return { field.split(':')[0]: field.split(':')[1] for field in passport }
@@ -87,7 +82,7 @@ def check_pid(value):
 
 def main(raw,part):
     # read inputs from file
-    input = read_input(raw)    
+    input = tools.read_input_blank_separator(raw)    
     input = [fields_2_dict(passport) for passport in input]
     expected = ['byr','iyr','eyr','hgt','hcl','ecl','pid','cid']
     optional = ['cid']
