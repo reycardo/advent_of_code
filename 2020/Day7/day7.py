@@ -21,17 +21,12 @@ raw = r'2020\Day7\input.txt'
 def parse_rule(rule):
     main_bag = [' '.join(rule.split(' ')[:2])]
     contains = ' '.join(rule.split(' ')[4:]).split(', ')
-    if contains == ['no other bags.']:
-        contains_each = []
-    elif contains != ['no other bags.']:
-        contains_each = [(int(x.split(' ')[0]),' '.join(x.split(' ')[1:3])) for x in contains]
+    no_bags = ['no other bags.']
+    if contains == no_bags:
+        weighted_edges = []
     else:
-        raise ValueError("You fucked up on contains: " + contains)    
-    rule = dict(zip(main_bag, [contains_each]))
-    weighted_edges = [main_bag+list(tup) for tup in contains_each if contains_each]
-    order = [0, 2, 1]
-    weighted_edges = [[weighted_edge[i] for i in order] for weighted_edge in weighted_edges if weighted_edges]
-    return rule, weighted_edges
+        weighted_edges = [(main_bag[0],' '.join(x.split(' ')[1:3]),int(x.split(' ')[0])) for x in contains]    
+    return weighted_edges
 
 def count_bags(DG, start):
     total = 0
@@ -39,18 +34,14 @@ def count_bags(DG, start):
         total += num['weight'] + num['weight'] * count_bags(DG, inside)
     return total
 
-
 def bag_di_graph(weighted_edges):
     DG = nx.DiGraph()    
     DG.add_weighted_edges_from(weighted_edges)    
     return DG
 
-def main(raw,part):
-    # read inputs from file
+def main(raw,part):    
     input = tools.read_input_new_line_sep(raw)    
-    rules, weighted_edges = zip(*[parse_rule(rule) for rule in input])
-    rules = {k: v for d in rules for k, v in d.items()}
-    weighted_edges = [item for sublist in weighted_edges for item in sublist]    
+    weighted_edges = tools.flatten([parse_rule(rule) for rule in input])    
     DG = bag_di_graph(weighted_edges)
     if part == 1:               
         return len(nx.algorithms.dag.ancestors(DG,'shiny gold'))
@@ -64,6 +55,10 @@ def run_tests():
     assert main(test_raw,1) == 4
     assert main(test_raw,2) == 32
     assert main(test_raw2,2) == 126
+    # solutions
+    assert main(input_raw,1) == 370
+    assert main(input_raw,2) == 29547
+
 
 
 if __name__ == '__main__':

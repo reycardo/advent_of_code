@@ -11,3 +11,6 @@ def read_input_blank_separator(file):
     with open(file, "r") as tf:        
         input = tf.read().split('\n\n')
         return [group.split() for group in input]
+
+def flatten(t):
+    return [item for sublist in t for item in sublist]
