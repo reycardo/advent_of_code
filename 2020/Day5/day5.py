@@ -33,7 +33,7 @@ def main(raw,part):
     elif part == 2:        
         bps_result = [read_binary_cols(bp) for bp in input]
         bps_ids = [bp[2] for bp in bps_result]
-        return [b+1 for a in bps_ids for b in bps_ids if (b+2==a and b+1 not in bps_ids)]        
+        return [b+1 for a in bps_ids for b in bps_ids if (b+2==a and b+1 not in bps_ids)][0]
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
     
