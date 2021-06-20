@@ -11,9 +11,7 @@ test_raw = os.path.join(__location__,'test.txt')
 # Start #
 #########
 
-def read_input_d2(file):
-    with open(file, "r") as tf:
-        input = tf.read().split('\n')        
+def parse_input(input):    
     input = [x.replace(':', '').split(' ') for x in input if x]        
     return [[y for x in group for y in x.split('-')] for group in input]
 
@@ -36,7 +34,7 @@ def check_corrupted_p2(list):
 
 def main(raw,part):
     # read inputs from file
-    input = read_input_d2(raw)    
+    input = parse_input(tools.read_input(raw))    
     if part == 1:
         # return a*b if a+b=2020 for any a,b in input
         return sum([check_corrupted_p1(group) for group in input])
@@ -51,6 +49,9 @@ def main(raw,part):
 def run_tests():
     assert main(test_raw,1) == 2
     assert main(test_raw,2) == 1
+    # solutions
+    assert main(input_raw,1) == 414    
+    assert main(input_raw,2) == 413
 
     
 if __name__ == '__main__':

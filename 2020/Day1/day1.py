@@ -31,6 +31,10 @@ def main(raw,part):
 def run_tests():
     assert main(test_raw,1) == 514579
     assert main(test_raw,2) == 241861950
+    # solutions
+    assert main(input_raw,1) == 545379
+    assert main(input_raw,2) == 257778836
+    
 
     
 if __name__ == '__main__':

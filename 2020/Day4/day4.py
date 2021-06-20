@@ -21,6 +21,10 @@ def fields_2_dict(passport):
     return { field.split(':')[0]: field.split(':')[1] for field in passport }
 
 
+def preprocess(input):
+    return [group.split() for group in input]
+
+
 def check_if_valid(passport,optional,expected):
     required = [x for x in expected if x not in optional]
     pp_reqs = [x for x in passport.keys() if x not in optional]    
@@ -72,6 +76,7 @@ def check_ecl(value):
     else:
         return False   
 
+
 def check_pid(value):        
     match = re.match(r"(\d{9})",value)
     if match and match.groups()[0] == value:
@@ -82,7 +87,7 @@ def check_pid(value):
 
 def main(raw,part):
     # read inputs from file
-    input = tools.read_input_blank_separator(raw)    
+    input = preprocess(tools.read_input(raw,'\n\n'))
     input = [fields_2_dict(passport) for passport in input]
     expected = ['byr','iyr','eyr','hgt','hcl','ecl','pid','cid']
     optional = ['cid']
@@ -119,7 +124,9 @@ def run_tests():
     assert check_ecl('wat') == False
     assert check_pid('000000001') == True
     assert check_pid('0123456789') == False
-    
+    # solutions
+    assert main(input_raw,1) == 216
+    assert main(input_raw,2) == 150
     
 
 if __name__ == '__main__':

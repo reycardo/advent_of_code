@@ -78,11 +78,13 @@ def main(raw,part):
     
 
 
-def run_tests():
-    pass
+def run_tests():    
     assert main(test_raw,1) == 7
     assert main(test_raw,2) == 336
-
+    # solutions
+    assert main(input_raw,1) == 145
+    assert main(input_raw,2) == 3424528800
+    
     
 if __name__ == '__main__':
     run_tests()
