@@ -40,7 +40,7 @@ def bag_di_graph(weighted_edges):
     return DG
 
 def main(raw,part):    
-    input = tools.read_input_new_line_sep(raw)    
+    input = tools.read_input(raw)    
     weighted_edges = tools.flatten([parse_rule(rule) for rule in input])    
     DG = bag_di_graph(weighted_edges)
     if part == 1:               
