@@ -49,7 +49,7 @@ def change_nop_jmp(instructions,i):
     return instructions
 
 def perf_action(instructions, i = 0, accumulator = 0, ran = []):
-    while check_if_dup(i,ran): #TODO fix this cond to stop
+    while check_if_dup(i,ran):
         if instructions[i][0] == 'acc':                        
             ran.append(i)
             accumulator, i = acc(instructions,accumulator,i)
