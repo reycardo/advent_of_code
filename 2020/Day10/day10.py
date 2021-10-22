@@ -1,5 +1,7 @@
 import os
 import sys
+import itertools
+import math
 
 sys.path.insert(0, './')
 from utils import tools
@@ -10,6 +12,7 @@ test_raw = os.path.join(__location__,'test.txt')
 
 # For interactive testing
 raw = r'2020\Day10\test.txt'
+raw2 = r'2020\Day10\test2.txt'
 
 #########
 # Start #
@@ -17,6 +20,20 @@ raw = r'2020\Day10\test.txt'
 
 def give_answer1(my_tuple):
     return my_tuple[0]*my_tuple[1]
+
+def split_list(my_list,i):
+    return my_list[:i], my_list[i:]
+
+def give_combinations(my_list): # gotta implement my own
+    n = len(my_list)  
+    final = []  
+    for i in range(n-1):
+        if my_list[i+1]-my_list[i]==3:
+            a, b = split_list(my_list,i)
+            final.append(a)
+            give_combinations(b) # 995 calls redo
+    return final    
+
 
 def check_valid_numbers(my_list):
     ones = 0
@@ -60,3 +77,6 @@ if __name__ == '__main__':
     #answer2 = main(input_raw,2)    
     print("Answer part1: {}".format(answer1))        
     #print("Answer part2: {}".format(answer2))    
+
+
+1 2 3 4 5 6 
