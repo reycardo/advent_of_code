@@ -11,6 +11,22 @@ test_raw = os.path.join(__location__,'test.txt')
 # Start #
 #########
 
+def count(input):
+    acc = 0
+    for i in range(len(input)-1) :
+        if input[i+1] > input[i]:
+            acc += 1 
+    return acc
+
+def count_slide(input):
+    acc = 0
+    for i in range(len(input)-2) :
+        if i == 0:
+            pass
+        elif input[i] + input[i+1] + input[i+2] > input[i-1] + input[i] + input[i+1]:
+            acc += 1 
+    return acc
+
 def main(raw,part):
     # read inputs from file
     input = tools.read_input(raw)
@@ -18,21 +34,19 @@ def main(raw,part):
     # convert to all elements int
     input = [int(i) for i in input if i]
     
-    if part == 1:
-        # return a*b if a+b=2020 for any a,b in input
-        return [a*b for a in input for b in input if a+b==2020][0]
-    elif part == 2:
-        # return a*b*c if a+b+c=2020 for any a,b,c in input
-        return [a*b*c for a in input for b in input for c in input if a+b+c==2020][0]
+    if part == 1:        
+        return count(input)
+    elif part == 2:        
+        return count_slide(input)
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
 
 
 def run_tests():
-    assert main(test_raw,1) == 514579
-    # assert main(test_raw,2) == 241861950
+    assert main(test_raw,1) == 7
+    assert main(test_raw,2) == 5
     # solutions
-    assert main(input_raw,1) == 545379
+    assert main(input_raw,1) == 1301
     # assert main(input_raw,2) == 257778836
     
 
