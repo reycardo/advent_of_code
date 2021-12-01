@@ -47,7 +47,7 @@ def run_tests():
     assert main(test_raw,2) == 5
     # solutions
     assert main(input_raw,1) == 1301
-    # assert main(input_raw,2) == 257778836
+    assert main(input_raw,2) == 1346
     
 
     
