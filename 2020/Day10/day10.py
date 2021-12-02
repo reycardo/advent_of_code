@@ -77,6 +77,3 @@ if __name__ == '__main__':
     #answer2 = main(input_raw,2)    
     print("Answer part1: {}".format(answer1))        
     #print("Answer part2: {}".format(answer2))    
-
-
-1 2 3 4 5 6 
