@@ -36,17 +36,17 @@ def main(raw,part):
 
 
 def run_tests():
-    assert main(test_raw,1) == 5
-    assert main(test_raw,2) == 12
+    assert main(test_raw,1) == 5934
+    # assert main(test_raw,2) == 12
     # solutions
-    assert main(input_raw,1) == 7473
-    assert main(input_raw,2) == 24164
+    # assert main(input_raw,1) == 7473
+    # assert main(input_raw,2) == 24164
     
 
     
 if __name__ == '__main__':
     run_tests()
     answer1 = main(input_raw,1)
-    answer2 = main(input_raw,2)    
+    #answer2 = main(input_raw,2)    
     print("Answer part1: {}".format(answer1))
-    print("Answer part2: {}".format(answer2))
+    #print("Answer part2: {}".format(answer2))
