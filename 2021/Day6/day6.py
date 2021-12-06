@@ -21,16 +21,11 @@ def main(raw,part):
     # read inputs from file
     input = tools.read_input(raw)
         
-    vents = parse_input(input)
-    board = draw_board(vents)    
-    if part == 1:                
-        board_finale = draw_vents(vents,board,1)
-        intersections = board_finale > 1
-        return intersections.sum()
+    vents = parse_input(input)    
+    if part == 1:                                
+        pass
     elif part == 2:        
-        board_finale = draw_vents(vents,board,2)
-        intersections = board_finale > 1
-        return intersections.sum()
+        pass
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
 
