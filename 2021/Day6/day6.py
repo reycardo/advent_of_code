@@ -24,7 +24,7 @@ def new_days(input,days,max_int_timer):
         new_babies = [max_int_timer] * input.count(0)
     return len(input)
 
-def calc_fish(input,days,max_int_timer):
+def calc_fish(input: int, days: int, max_int_timer: int):
     counts = Counter(input)
     fish_counter = [0] * (max_int_timer + 1) # fish_counter[x] represents the number of fishes with internal time x
     for i in range(max_int_timer + 1):

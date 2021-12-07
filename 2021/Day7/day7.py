@@ -43,7 +43,7 @@ def main(raw,part):
     elif part == 2:        
         return fuel(input,2)
     else:
-        raise ValueError("part must be 1 or 2, instead of: " + part)
+        raise ValueError("part must be 1 or 2, instead of: " + str(part))
 
 
 def run_tests():
