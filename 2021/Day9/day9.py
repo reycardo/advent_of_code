@@ -58,7 +58,7 @@ def get_basins(input):
 
 def find_biggest(basins,n):
     basin_sizes = Counter(tools.flatten(basins.tolist()))
-    del basin_sizes[0]
+    del basin_sizes[0] # 0s are the 9s (falses)
     return sorted(list(basin_sizes.values()))[-n:]
 
 
