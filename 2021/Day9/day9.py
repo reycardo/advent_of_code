@@ -82,7 +82,7 @@ def run_tests():
     assert main(test_raw,2) == 1134
     # solutions
     assert main(input_raw,1) == 572
-    #assert main(input_raw,2) == 961734
+    assert main(input_raw,2) == 847044
     
     
 if __name__ == '__main__':
