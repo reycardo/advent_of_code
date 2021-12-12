@@ -41,7 +41,7 @@ def bag_di_graph(weighted_edges):
 
 def main(raw,part):    
     input = tools.read_input(raw)    
-    weighted_edges = tools.flatten([parse_rule(rule) for rule in input])    
+    weighted_edges = tools.flatten([parse_rule(rule) for rule in input])
     DG = bag_di_graph(weighted_edges)
     if part == 1:               
         return len(nx.algorithms.dag.ancestors(DG,'shiny gold'))
