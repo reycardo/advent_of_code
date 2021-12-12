@@ -29,26 +29,26 @@ def make_graph(edges):
 
 
 def visit(G, part, node='start', visited=set(), double = False):
-    if node == 'end':
+    if node == 'end': # hits end add 1 to sum
         return 1
     if node in visited:
         if part == 1:
-            return 0
+            return 0  # hits a visited stops recursion without adding
         elif part == 2:
             if double:
-                return 0
+                return 0 # has been visited and a double was discovered already
             else:
-                if node == 'start':
+                if node == 'start': # start cannot be a double
                     return 0
-                double = True    
+                double = True # continues recursion but a double has been found for the 1st time
         else:
             raise ValueError("part must be 1 or 2, instead of: " + part)                        
-    visited_copy = visited.copy()    
-    if G.nodes[node]['size'] == 'small':
-        visited_copy.add(node)
+    visited_copy = visited.copy() # do not change original visited
+    if G.nodes[node]['size'] == 'small': # if the node is a small cave
+        visited_copy.add(node) 
     sum = 0
-    for child in G[node]:
-        sum += visit(G,part,child,visited_copy,double)
+    for child in G[node]: # get all paths available from that node (the childs)
+        sum += visit(G,part,child,visited_copy,double) # recursively visits childs
     return sum
 
 def main(raw,part):    
