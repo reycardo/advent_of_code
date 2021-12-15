@@ -70,8 +70,8 @@ class Polymer():
 
     def count_answer(self):
         counts = Counter(self.poli)
-        most= counts.most_common(1)
-        least =counts.most_common()[:-2:-1]
+        most = counts.most_common(1)
+        least = counts.most_common()[:-2:-1]
         return most[0][1]-least[0][1]
 
 def parse_input(input):
