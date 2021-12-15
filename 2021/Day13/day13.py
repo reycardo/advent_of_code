@@ -100,14 +100,6 @@ def run_tests():
 if __name__ == '__main__':
     run_tests()
     #answer1 = main(input_raw,1)
-    answer2 = main(marta_input_raw,2)    
+    answer2 = main(input_raw,2)    
     #print("Answer part1: {}".format(answer1))
     print("Answer part2: {}".format(answer2))
-
-
-# [[  # #     # # #     #     #       # #   # # # #   # # #       # #       # #    ]
-#  [#     #   #     #   #   #           #   #         #     #   #     #   #     #  ]
-#  [#     #   # # #     # #             #   # # #     # # #     #         #        ]
-#  [# # # #   #     #   #   #           #   #         #     #   #   # #   #        ]
-#  [#     #   #     #   #   #     #     #   #         #     #   #     #   #     #  ]
-#  [#     #   # # #     #     #     # #     #         # # #       # # #     # #    ]]    
