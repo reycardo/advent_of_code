@@ -4,12 +4,15 @@ sys.path.insert(0, './')
 from utils import tools
 from operator import itemgetter
 import numpy as np
+import pandas as pd
 
 raw = r'2021\Day13\test.txt'
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 input_raw = os.path.join(__location__,'input.txt')
 test_raw = os.path.join(__location__,'test.txt')
+marta_input_raw = os.path.join(__location__,'input_day_13.txt')
+
 
 #########
 # Start #
@@ -61,8 +64,8 @@ class Paper():
        
     def fold_sheet(self,part):
         sheet = self.sheet.copy()
-        for fold in self.to_fold:
-            sheet = fold_it(fold,sheet)
+        for fold in self.to_fold:            
+            sheet = fold_it(fold,sheet)            
             self.fold_count += 1
             if part==1 and self.fold_count == 1:
                 break
@@ -79,7 +82,7 @@ def main(raw,part):
         return np.sum(new_sheet)
     elif part == 2:
         new_sheet = paper.fold_sheet(part=2)
-        print(new_sheet)
+        print(pd.DataFrame(new_sheet))
         pass
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
@@ -96,6 +99,14 @@ def run_tests():
 if __name__ == '__main__':
     run_tests()
     #answer1 = main(input_raw,1)
-    answer2 = main(input_raw,2)    
+    answer2 = main(marta_input_raw,2)    
     #print("Answer part1: {}".format(answer1))
     print("Answer part2: {}".format(answer2))
+
+
+# [[  # #     # # #     #     #       # #   # # # #   # # #       # #       # #    ]
+#  [#     #   #     #   #   #           #   #         #     #   #     #   #     #  ]
+#  [#     #   # # #     # #             #   # # #     # # #     #         #        ]
+#  [# # # #   #     #   #   #           #   #         #     #   #   # #   #        ]
+#  [#     #   #     #   #   #     #     #   #         #     #   #     #   #     #  ]
+#  [#     #   # # #     #     #     # #     #         # # #       # # #     # #    ]]    
