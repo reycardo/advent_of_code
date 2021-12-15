@@ -82,7 +82,8 @@ def main(raw,part):
         return np.sum(new_sheet)
     elif part == 2:
         new_sheet = paper.fold_sheet(part=2)
-        print(pd.DataFrame(new_sheet))
+        df_sheet = pd.DataFrame(new_sheet)
+        print(df_sheet.replace(1,'#').replace(0,' '))
         pass
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
