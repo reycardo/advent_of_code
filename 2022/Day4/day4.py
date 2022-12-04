@@ -21,21 +21,21 @@ class Assignments():
         self.answer2 = self.answer1 + self.sum_overlaped()
 
     def get_contained(self, section):
-        # first contained in second
+        # first contained in second -- 456 , 34567
         if section[0][0] >= section[1][0]:
             if section[0][1] <= section[1][1]:
                 return len(range(section[0][0],section[0][1]+1))                    
-        # second contained in first
+        # second contained in first -- 34567 , 456
         if section[0][0] <= section[1][0]:
             if section[0][1] >= section[1][1]:
                 return len(range(section[1][0],section[1][1]+1))
         return 0
 
     def get_overlaped(self, section):
-        # first overlaps second
+        # first overlaps second -- 123 , 234
         if section[0][1] >= section[1][0] and section[1][1] >= section[0][0]:
             return len(range(section[1][0],section[0][1]+1))
-        # second overlaps in first
+        # second overlaps in first -- 234 , 123
         if section[1][1] >= section[0][0] and section[0][0] >= section[1][1]:
             return len(range(section[0][0],section[1][1]+1))
         return 0        
