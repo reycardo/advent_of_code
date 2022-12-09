@@ -73,8 +73,6 @@ class Browse():
         return min([data['size'] for _, data in self.G.nodes.data() if data['directory'] == True and data['size'] >= to_delete])
 
 
-
-
 def main(raw,part):
     input = tools.read_input(raw)
     filesystem = Browse(input=input)
