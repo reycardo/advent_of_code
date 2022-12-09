@@ -1,6 +1,6 @@
 import os
 import sys
-import re
+from re import findall
 sys.path.insert(0, './')
 from utils import tools
 
@@ -29,13 +29,13 @@ class Crates():
         for string in self.input[:-1]:
             self.parse_row(string)
 
-    def replace_stuff(self, val: str):
+    def replace_excess(self, val: str):
         replaced = [ele.replace('[','').replace(']','').strip() for ele in val]
         replaced.reverse()        
         return [ele for ele in replaced if ele]
 
     def clean_dict(self):
-        self.crate_stacks = {k: self.replace_stuff(v) for k, v in self.crate_stacks.items()}        
+        self.crate_stacks = {k: self.replace_excess(v) for k, v in self.crate_stacks.items()}        
     
 
 class Procedure():
@@ -46,7 +46,7 @@ class Procedure():
         self.crates = crates
 
     def parse_procedure(self):
-        return [[int(digit) for digit in re.findall(r'\d+',procedure)] for procedure in self.input]
+        return [[int(digit) for digit in findall(r'\d+',procedure)] for procedure in self.input]
 
     def do_procedure(self, proccess,part):
         # get orders
@@ -64,6 +64,7 @@ class Procedure():
     def run(self, part):
         [self.do_procedure(process, part) for process in self.parsed_procedure]   
 
+
 def read_input(file,sep: str = '\n'):
     with open(file, "r") as tf:        
         return tf.read().split(sep)
@@ -71,7 +72,8 @@ def read_input(file,sep: str = '\n'):
 def parse_input(input: list):
     # split setup from procedure
     index = input.index('')
-    return input[:index], input[index + 1:]            
+    setup, procedure = input[:index], input[index + 1:]            
+    return setup, procedure
 
 
 def main(raw,part):
@@ -94,7 +96,7 @@ def run_tests():
     assert main(test_raw,2) == 'MCD'
     # solutions
     assert main(input_raw,1) == 'TLFGBZHCN'
-    #assert main(input_raw,2) == 2641
+    assert main(input_raw,2) == 'QRQFHFWCL'
 
 
 if __name__ == '__main__':
