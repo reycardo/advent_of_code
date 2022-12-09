@@ -48,20 +48,21 @@ class Procedure():
     def parse_procedure(self):
         return [[int(digit) for digit in re.findall(r'\d+',procedure)] for procedure in self.input]
 
-    def do_procedure(self, proccess):
+    def do_procedure(self, proccess,part):
         # get orders
         amount, from_stack, to_stack = proccess[0], proccess[1], proccess[2]
         to_move = self.crates[from_stack][-amount:]
         del self.crates[from_stack][-amount:]
         if len(to_move) > 1:
-            to_move.reverse()            
+            if part == 1:
+                to_move.reverse()            
         self.crates[to_stack].extend(to_move)
 
     def get_top_crates(self):
         return ''.join([stack[-1] for stack in self.crates.values()])
 
-    def run(self):
-        [self.do_procedure(process) for process in self.parsed_procedure]   
+    def run(self, part):
+        [self.do_procedure(process, part) for process in self.parsed_procedure]   
 
 def read_input(file,sep: str = '\n'):
     with open(file, "r") as tf:        
@@ -79,25 +80,26 @@ def main(raw,part):
     crates = Crates(input=setup)
     procedure = Procedure(input=procedure, crates=crates.crate_stacks)
     if part == 1:        
-        procedure.run()
+        procedure.run(part=1)
         return procedure.get_top_crates()
-    elif part == 2:        
-        pass
+    elif part == 2:
+        procedure.run(part=2)
+        return procedure.get_top_crates()
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
 
 
 def run_tests():
     assert main(test_raw,1) == 'CMZ'
-    #assert main(test_raw,2) == 4
+    assert main(test_raw,2) == 'MCD'
     # solutions
-    #assert main(input_raw,1) == 540
+    assert main(input_raw,1) == 'TLFGBZHCN'
     #assert main(input_raw,2) == 2641
 
 
 if __name__ == '__main__':
     run_tests()
     answer1 = main(input_raw,1)
-    #answer2 = main(input_raw,2)
+    answer2 = main(input_raw,2)
     print("Answer part1: {}".format(answer1))
-    #print("Answer part2: {}".format(answer2))
+    print("Answer part2: {}".format(answer2))
