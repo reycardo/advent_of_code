@@ -1,6 +1,5 @@
 import os
 import sys
-from re import findall
 sys.path.insert(0, './')
 from utils import tools
 
@@ -22,6 +21,7 @@ class Buffer():
         self.input = input
         self.input_parsed = input[0]
         _, self.answer1, _ = self.find_marker(4)
+        _, self.answer2, _ = self.find_marker(14)
 
     def find_marker(self, number:int):
         found = False
@@ -38,7 +38,7 @@ def main(raw,part):
     if part == 1:        
         return buffer.answer1
     elif part == 2:
-        pass
+        return buffer.answer2
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
 
@@ -50,15 +50,19 @@ def run_tests():
     assert main(test_raw4,1) == 10
     assert main(test_raw5,1) == 11
 
-    #assert main(test_raw,2) == 'MCD'
+    assert main(test_raw,2) == 19
+    assert main(test_raw2,2) == 23
+    assert main(test_raw3,2) == 23
+    assert main(test_raw4,2) == 29
+    assert main(test_raw5,2) == 26
     # solutions
-    #assert main(input_raw,1) == 'TLFGBZHCN'
-    #assert main(input_raw,2) == 'QRQFHFWCL'
+    assert main(input_raw,1) == 1134
+    assert main(input_raw,2) == 2263
 
 
 if __name__ == '__main__':
     run_tests()
     answer1 = main(input_raw,1)
-    #answer2 = main(input_raw,2)
+    answer2 = main(input_raw,2)
     print("Answer part1: {}".format(answer1))
-    #print("Answer part2: {}".format(answer2))
+    print("Answer part2: {}".format(answer2))
