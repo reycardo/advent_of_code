@@ -3,7 +3,7 @@ import sys
 sys.path.insert(0, './')
 from utils import tools
 import numpy as np
-from typing_1 import Tuple
+from typing import Tuple
 
 __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
 input_raw = os.path.join(__location__,'input.txt')
