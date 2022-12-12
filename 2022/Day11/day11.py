@@ -33,7 +33,7 @@ class Monkey():
         self.current_items = []
 
     def inspect_item(self, item, part):
-        item = self.do_operation(item)        
+        item = self.do_operation(item)
         item = self.no_damage(item, part)
         if self.do_test(item):
             self.send_to(item,self.if_true)
@@ -52,13 +52,13 @@ class Monkey():
                 return item % self.lcm
             else:
                 return item
-        
+
 
     def do_operation(self, old):
         number_list = [int(s) for s in self.operation.split() if s.isdigit()]
         if not number_list:
             number = old
-        else: 
+        else:
             number = number_list[0]
 
         if '*' in self.operation:
@@ -74,10 +74,10 @@ class Keep_Away():
         self.parsed = self.parse_input()
         self.monkeys = self.create_monkeys()
         self.give_lcm_to_monkeys()
-        self.round = 1        
+        self.round = 1
 
     def parse_input(self):
-        parsed = [[]]        
+        parsed = [[]]
         for i in self.input:
             if not i:
                 parsed.append([])
@@ -98,11 +98,11 @@ class Keep_Away():
         return [Monkey(*self.get_monkey_info(monkey), send_to= self.send_to) for monkey in self.parsed]
 
     def send_to(self, item, receiver):
-        self.monkeys[receiver].current_items.append(item)        
+        self.monkeys[receiver].current_items.append(item)
 
     def run_round(self, part):
         for monkey in self.monkeys:
-            monkey.do_monkey_turn(part) 
+            monkey.do_monkey_turn(part)
 
     def play(self, n: int, part: int):
         # play n rounds
@@ -140,7 +140,7 @@ def run_tests():
 
     # solutions
     assert main(input_raw, 1) == 50172
-    #assert main(input_raw, 2) == 1
+    assert main(input_raw, 2) == 11614682178
 
 
 if __name__ == '__main__':
@@ -148,4 +148,4 @@ if __name__ == '__main__':
     answer1 = main(input_raw, 1)
     answer2 = main(input_raw, 2)
     print("Answer part1: {}".format(answer1))
-    print("Answer part2: {}".format(answer2))    
+    print("Answer part2: {}".format(answer2))
