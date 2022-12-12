@@ -114,7 +114,7 @@ def run_tests():
 
     # solutions
     assert main(input_raw, 1) == 481
-    #assert main(input_raw, 2) == 11614682178
+    assert main(input_raw, 2) == 480
 
 
 if __name__ == '__main__':
