@@ -37,9 +37,6 @@ class Hill_Climb():
     def make_graph(self, edges):
         G = nx.DiGraph()    
         G.add_edges_from(edges)
-        #nx.set_node_attributes(G, { node: (self.matrix[node]) for node in G.nodes }, "weight")
-        #nx.set_edge_attributes(G, { edge: self.matrix[edge[1]] for edge in G.edges() }, "weight")
-        #nx.set_node_attributes(G, { node: 1 for node in G.nodes }, "weight")
         nx.set_edge_attributes(G, { edge: 1 for edge in G.edges() }, "weight")        
         return G
 
