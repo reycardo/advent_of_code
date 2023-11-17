@@ -4,11 +4,16 @@ version = "0.0.1"
 description = "Advent of Code repo"
 authors = ["reycardo <reycardo_95@hotmail.com>"]
 readme = "README.md"
-packages = [{include = "advent-of-code"}]
+packages = [
+    {include = "advent-of-code"},
+    {include = "utils", from = "advent-of-code"}
+]
 
 
 [tool.poetry.dependencies]
 python = "^3.12"
+aocd = "^0.1"
+browser-cookie3 = "^0.19.1"
 
 [build-system]
 requires = ["poetry-core"]
