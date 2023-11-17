@@ -143,4 +143,4 @@ test-reports/
 lib/
 
 # virtual environment
-/env/
+/venv/
