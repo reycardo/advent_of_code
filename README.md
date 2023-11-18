@@ -1,7 +1,8 @@
-# Advent of Code challenge
----
+# Advent of Code challenge ⭐️
+![](https://img.shields.io/badge/stars%20⭐-34-yellow)
 
 ## Quick start (Windows)
+
 ### Pyenv-win
 
 1. Install pyenv-win in PowerShell.
