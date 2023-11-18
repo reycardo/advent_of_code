@@ -1,5 +1,12 @@
 # Advent of Code challenge ⭐️
-![](https://img.shields.io/badge/stars%20⭐-34-yellow)
+![](https://img.shields.io/badge/2020 stars%20⭐-34-yellow)
+![](https://img.shields.io/badge/2020 days%20completed-17-red)
+
+![](https://img.shields.io/badge/2021 stars%20⭐-34-yellow)
+![](https://img.shields.io/badge/2021 days%20completed-17-red)
+
+![](https://img.shields.io/badge/2022 stars%20⭐-34-yellow)
+![](https://img.shields.io/badge/2022 days%20completed-17-red)
 
 ## Quick start (Windows)
 
