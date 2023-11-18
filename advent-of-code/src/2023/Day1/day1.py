@@ -16,6 +16,11 @@ class ElfCalories:
         self.elf_count = len(self.elf_calorie_dict)
 
     def get_elf_dict(self):
+        """_summary_
+
+        Returns:
+            _type_: _description_
+        """
         d = {
             elf: list(sub[1])
             for elf, sub in enumerate(groupby(self.input, key=bool))
@@ -26,6 +31,14 @@ class ElfCalories:
         }  # returns dict where key is elf number, v is list of elf calories, sum(v) is total cals elf has
 
     def get_max(self, number):
+        """_summary_
+
+        Args:
+            number (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         # sorts descending, gets top number
         return sum(
             n
@@ -50,7 +63,7 @@ def main(raw, part):
     """
     text_input = read_input(raw)
     input_parsed = [int(i) if i else "" for i in text_input]
-    elf_cals = Elf_Calories(input_parsed)
+    elf_cals = ElfCalories(input_parsed)
     if part == 1:
         return elf_cals.get_max(1)
     elif part == 2:
