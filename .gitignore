@@ -133,14 +133,5 @@ Temporary Items
 *.patch
 *.diff
 
-# Sample data
-/test-reports/
-
-# Python unittests
-test-reports/
-
-# lib
-lib/
-
 # virtual environment
 /venv/
