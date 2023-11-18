@@ -1,9 +1,9 @@
 # Advent of Code challenge ⭐️
-![](https://img.shields.io/badge/2020_stars%20⭐-26-yellow)
-![](https://img.shields.io/badge/2020_days%20completed-13-red)
+![](https://img.shields.io/badge/2020_stars%20⭐-19-yellow)
+![](https://img.shields.io/badge/2020_days%20completed-9-red)
 
-![](https://img.shields.io/badge/2021_stars%20⭐-26-yellow)
-![](https://img.shields.io/badge/2021_days%20completed-13-red)
+![](https://img.shields.io/badge/2021_stars%20⭐-30-yellow)
+![](https://img.shields.io/badge/2021_days%20completed-15-red)
 
 ![](https://img.shields.io/badge/2022_stars%20⭐-26-yellow)
 ![](https://img.shields.io/badge/2022_days%20completed-13-red)
