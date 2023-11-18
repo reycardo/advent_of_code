@@ -22,7 +22,6 @@
 1. Run `type .python-version` to check what python version this repo uses
 1. Run `pyenv install <version>` to install the python version this repo uses
 1. Run `pyenv local <version>` to set a Python version as the local version
-1. Run `pyenv local <version>` to set a Python version as the local version
 
 ### Poetry
 
