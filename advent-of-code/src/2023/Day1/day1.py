@@ -1,4 +1,5 @@
-from utils.tools import get_txt_files, read_input
+from utils.tools import get_txt_files, read_input, timing_decorator
+from utils.colors import magenta_color, reset_color
 from itertools import groupby
 
 files = get_txt_files(__file__)
@@ -16,11 +17,6 @@ class ElfCalories:
         self.elf_count = len(self.elf_calorie_dict)
 
     def get_elf_dict(self):
-        """_summary_
-
-        Returns:
-            _type_: _description_
-        """
         d = {
             elf: list(sub[1])
             for elf, sub in enumerate(groupby(self.input, key=bool))
@@ -31,14 +27,6 @@ class ElfCalories:
         }  # returns dict where key is elf number, v is list of elf calories, sum(v) is total cals elf has
 
     def get_max(self, number):
-        """_summary_
-
-        Args:
-            number (_type_): _description_
-
-        Returns:
-            _type_: _description_
-        """
         # sorts descending, gets top number
         return sum(
             n
@@ -48,19 +36,8 @@ class ElfCalories:
         )
 
 
+@timing_decorator
 def main(raw, part):
-    """_summary_
-
-    Args:
-        raw (_type_): _description_
-        part (_type_): _description_
-
-    Raises:
-        ValueError: _description_
-
-    Returns:
-        _type_: _description_
-    """
     text_input = read_input(raw)
     input_parsed = [int(i) if i else "" for i in text_input]
     elf_cals = ElfCalories(input_parsed)
@@ -73,7 +50,7 @@ def main(raw, part):
 
 
 def run_tests():
-    """_summary_"""
+    print(f"\nRunning Tests:")
     assert main(test_raw, 1) == 24000
     assert main(test_raw, 2) == 45000
     # solutions
@@ -81,9 +58,14 @@ def run_tests():
     assert main(input_raw, 2) == 199172
 
 
+def run_solution():
+    print(f"\nRunning Solutions:")
+    answer1 = main(input_raw, 1)
+    print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
+    answer2 = main(input_raw, 2)
+    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+
+
 if __name__ == "__main__":
     run_tests()
-    answer1 = main(input_raw, 1)
-    answer2 = main(input_raw, 2)
-    print(f"Answer part1: {answer1}")
-    print(f"Answer part2: {answer2}")
+    run_solution()
