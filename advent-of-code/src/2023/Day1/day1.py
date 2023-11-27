@@ -3,8 +3,6 @@ from utils.colors import magenta_color, reset_color
 from itertools import groupby
 
 files = get_txt_files(__file__)
-input_raw = files["input"]
-test_raw = files["test"]
 #########
 # Start #
 #########
@@ -51,18 +49,19 @@ def main(raw, part):
 
 def run_tests():
     print(f"\nRunning Tests:")
-    assert main(test_raw, 1) == 24000
-    assert main(test_raw, 2) == 45000
+    assert main(files["test"], 1) == 24000
+    assert main(files["test"], 2) == 45000
+
     # solutions
-    assert main(input_raw, 1) == 66616
-    assert main(input_raw, 2) == 199172
+    assert main(files["input"], 1) == 66616
+    assert main(files["input"], 2) == 199172
 
 
 def run_solution():
     print(f"\nRunning Solutions:")
-    answer1 = main(input_raw, 1)
+    answer1 = main(files["input"], 1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    answer2 = main(input_raw, 2)
+    answer2 = main(files["input"], 2)
     print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
