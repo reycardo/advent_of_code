@@ -41,7 +41,7 @@ Login on AoC with github or whatever
 Open browser's developer console (e.g. right click --> Inspect) and navigate to the Network tab
 GET any input page, say adventofcode.com/2016/day/1/input, and look in the request headers.
 It's a long hex string. Copy it to a plain text file at ~/.config/aocd/token.
-![get_token](advent-of-code\docs\images\get_aocd_token.png)
+![get_token](https://github.com/reycardo/advent_of_code//blob/master/advent-of-code/docs/images/get_aocd_token.png?raw=true)
 
 1. Make sure your venv is activated:
 `venv\Scripts\activate.bat`
