@@ -1,6 +1,5 @@
 from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
-from itertools import groupby
 
 files = get_txt_files(__file__)
 #########
