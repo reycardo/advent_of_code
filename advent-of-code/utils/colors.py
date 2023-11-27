@@ -1,0 +1,20 @@
+black_color = "\033[30m"
+red_color = "\033[31m"
+green_color = "\033[32m"
+yellow_color = "\033[33m"
+blue_color = "\033[34m"
+magenta_color = "\033[35m"
+cyan_color = "\033[36m"
+white_color = "\033[37m"
+
+# Bright versions
+bright_black_color = "\033[90m"
+bright_red_color = "\033[91m"
+bright_green_color = "\033[92m"
+bright_yellow_color = "\033[93m"
+bright_blue_color = "\033[94m"
+bright_magenta_color = "\033[95m"
+bright_cyan_color = "\033[96m"
+bright_white_color = "\033[97m"
+
+reset_color = "\033[0m"
