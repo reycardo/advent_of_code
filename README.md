@@ -33,6 +33,23 @@
 And now you are ready to use this repo
 
 ## Usage
+### Getting input
+Requirements:
+Puzzle inputs differ by user. For this reason, you can't get your data with an unauthenticated request. Here's how to get your session cookie for aocd to use:
+
+Login on AoC with github or whatever
+Open browser's developer console (e.g. right click --> Inspect) and navigate to the Network tab
+GET any input page, say adventofcode.com/2016/day/1/input, and look in the request headers.
+It's a long hex string. Copy it to a plain text file at ~/.config/aocd/token.
+![get_token](advent-of-code\docs\images\get_aocd_token.png)
+
+1. Make sure your venv is activated:
+`venv\Scripts\activate.bat`
+1. Run get_input.py:
+   Example for getting Day1 of 2023
+`python advent-of-code\utils\get_input.py 1 2023`
+
+### Running Code
 1. Make sure your venv is activated:
 `venv\Scripts\activate.bat`
 1. Run from root(advent_of_code):
