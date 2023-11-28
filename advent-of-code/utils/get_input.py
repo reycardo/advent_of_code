@@ -15,7 +15,7 @@ def download_aoc_input(day, year):
     subprocess.run(command, shell=True)
 
 
-if __name__ == "__main__":
+def main():
     # Check if the correct number of arguments is provided
     if len(sys.argv) != 3:
         print("Usage: python my_script.py <day> <year>")
@@ -27,3 +27,7 @@ if __name__ == "__main__":
 
     # Run the function to download AOC input
     download_aoc_input(day, year)
+
+
+if __name__ == "__main__":
+    main()

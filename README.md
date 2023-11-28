@@ -47,7 +47,7 @@ It's a long hex string. Copy it to a plain text file at ~/.config/aocd/token.
 `venv\Scripts\activate.bat`
 1. Run get_input.py:
    Example for getting Day1 of 2023
-`python advent-of-code\utils\get_input.py 1 2023`
+`poetry run get_input 1 2023`
 
 ### Running Code
 1. Make sure your venv is activated:
