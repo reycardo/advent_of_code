@@ -128,13 +128,13 @@ def run_tests():
 
     # solutions
     assert main(files["input"], 1) == 4462686
-    # assert main(files["input"], 2) == 5218616
+    assert main(files["input"], 2) == 5936
 
 
 def run_solution():
     print(f"\nRunning Solutions:")
-    # answer1 = main(files["input"], 1)
-    # print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
+    answer1 = main(files["input"], 1)
+    print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(files["input"], 2)
     print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
