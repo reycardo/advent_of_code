@@ -8,41 +8,33 @@ files = get_txt_files(__file__)
 #########
 
 
-class ElfCalories:
+class Calibration:
     def __init__(self, text_input: list):
         self.input = text_input
-        self.elf_calorie_dict = self.get_elf_dict()
-        self.elf_count = len(self.elf_calorie_dict)
 
-    def get_elf_dict(self):
-        d = {
-            elf: list(sub[1])
-            for elf, sub in enumerate(groupby(self.input, key=bool))
-            if sub[0]
-        }  # groups into an enumerated dict if key is not ''
-        return {
-            k: (v, sum(v)) for k, v in d.items()
-        }  # returns dict where key is elf number, v is list of elf calories, sum(v) is total cals elf has
+    def get_calib_values(self, input_string: str):
+        # Find the first digit
+        first_digit = next((char for char in input_string if char.isdigit()), None)
 
-    def get_max(self, number):
-        # sorts descending, gets top number
-        return sum(
-            n
-            for _, n in sorted(
-                self.elf_calorie_dict.values(), key=lambda t: t[1], reverse=True
-            )[:number]
-        )
+        # Find the last digit
+        reversed_string = input_string[::-1]
+        last_digit = next((char for char in reversed_string if char.isdigit()), None)
+
+        return first_digit, last_digit
+
+    def get_calib_doc(self):
+        return self.get_calib_values(self.input)
 
 
 @timing_decorator
 def main(raw, part):
     text_input = read_input(raw)
-    input_parsed = [int(i) if i else "" for i in text_input]
-    elf_cals = ElfCalories(input_parsed)
+    input_parsed = [i if i else "" for i in text_input]
+    calibration = Calibration(input_parsed)
     if part == 1:
-        return elf_cals.get_max(1)
+        return calibration.get_calib_doc()
     elif part == 2:
-        return elf_cals.get_max(3)
+        pass
     else:
         raise ValueError("part must be 1 or 2, instead of: " + part)
 
@@ -50,19 +42,19 @@ def main(raw, part):
 def run_tests():
     print(f"\nRunning Tests:")
     assert main(files["test"], 1) == 24000
-    assert main(files["test"], 2) == 45000
+    # assert main(files["test"], 2) == 45000
 
     # solutions
-    assert main(files["input"], 1) == 66616
-    assert main(files["input"], 2) == 199172
+    # assert main(files["input"], 1) == 66616
+    # assert main(files["input"], 2) == 199172
 
 
 def run_solution():
     print(f"\nRunning Solutions:")
     answer1 = main(files["input"], 1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    answer2 = main(files["input"], 2)
-    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+    # answer2 = main(files["input"], 2)
+    # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
 if __name__ == "__main__":
