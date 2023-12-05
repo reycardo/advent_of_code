@@ -51,8 +51,22 @@ def timing_decorator(func: Callable[..., Any]) -> Callable[..., Any]:
         end_time = time.time()
         elapsed_time = end_time - start_time
         readable_time = format_elapsed_time(elapsed_time)
+
+        # Get the value of the 'raw' parameter
+        raw_value = kwargs.get("raw", None)
+
+        # If 'raw' is present and is a file path, truncate it to the file name
+        if raw_value and os.path.isfile(raw_value):
+            kwargs["raw"] = os.path.basename(raw_value)
+
+        # Get the parameter names and values
+        param_names = func.__code__.co_varnames[: func.__code__.co_argcount]
+        param_values = args + tuple(f"{key}={value}" for key, value in kwargs.items())
+
+        # Print the function name, elapsed time, and parameter values
         print(
-            f"{green_color}{func.__name__}{reset_color} took {cyan_color}{readable_time}{reset_color} to run."
+            f"{green_color}{func.__name__}({', '.join(f'{value}' for value in param_values)}){reset_color} "
+            f"took {cyan_color}{readable_time}{reset_color} to run."
         )
         return result
 
