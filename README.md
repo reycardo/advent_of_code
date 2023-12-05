@@ -60,4 +60,4 @@ It's a long hex string. Copy it to a plain text file at ~/.config/aocd/token.
 `venv\Scripts\activate.bat`
 1. Run from root(advent_of_code):
    Example running Day1 of 2023
-`python advent-of-code\src\2023\Day1\day1.py`
+`python advent-of-code\src\2023\Day1\main.py`
