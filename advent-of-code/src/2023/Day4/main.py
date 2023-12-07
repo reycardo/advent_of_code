@@ -70,8 +70,8 @@ class Scratchcards:
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    scratchcards = Scratchcards(input_parsed)
-    return scratchcards.solve(part)
+    puzzle = Scratchcards(input_parsed)
+    return puzzle.solve(part)
 
 
 def run_tests():

@@ -83,8 +83,8 @@ class Game:
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    game = Game(input_parsed)
-    return game.solve(part)
+    puzzle = Game(input_parsed)
+    return puzzle.solve(part)
 
 
 def run_tests():

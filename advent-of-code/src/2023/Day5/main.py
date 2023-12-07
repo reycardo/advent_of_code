@@ -21,13 +21,6 @@ class Correspondence:
         else:
             return None
 
-    def invert_mapping(self, number):
-        if self.destination <= number <= self.destination + self.range:
-            difference = number - self.destination
-            return self.source + difference
-        else:
-            return None
-
 
 class Map:
     def __init__(self, correspondence_list: List[Correspondence]):
@@ -37,12 +30,6 @@ class Map:
         for correspondence in self.correspondences:
             if correspondence.correspond_mapping(number):
                 return correspondence.correspond_mapping(number)
-        return number
-
-    def find_inverted_correspondence(self, number):
-        for correspondence in self.correspondences:
-            if correspondence.invert_mapping(number):
-                return correspondence.invert_mapping(number)
         return number
 
 
@@ -97,30 +84,43 @@ class Almanac:
         location = self.humidity_location_map.find_correspondence(humidity)
         return location
 
+    def test_all_seeds(self):
+        self.locations = []
+        for i in range(0, len(self.seeds), 2):
+            self.locations.extend(
+                map(
+                    self.get_location_from_seed,
+                    range(self.seeds[i], self.seeds[i] + self.seeds[i + 1] + 1),
+                )
+            )
+        return min(self.locations)
+
+    def check_seed(self, seed):
+        for i in range(0, len(self.seeds), 2):
+            if self.seeds[i] <= seed <= self.seeds[i] + self.seeds[i + 1] - 1:
+                return True
+        return False
+
     def solve(self, part):
         if part == 1:
             self.locations = list(map(self.get_location_from_seed, self.seeds))
             return min(self.locations)
-        if part == 2:  # NOT DOING THIS SHIT
-            pass
-            # self.locations = []
-            # for i in range(0, len(self.seeds), 2):
-            #     self.locations.extend(map(self.get_location_from_seed, range(self.seeds[i], self.seeds[i] + self.seeds[i+1] + 1)))
-            # return min(self.locations)
+        if part == 2:
+            return self.test_all_seeds()
 
 
 @timing_decorator
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    scratchcards = Almanac(input_parsed)
-    return scratchcards.solve(part)
+    puzzle = Almanac(input_parsed)
+    return puzzle.solve(part)
 
 
 def run_tests():
     print(f"\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 35
-    # assert main(raw=files["test"], part=2) == 46
+    assert main(raw=files["test"], part=2) == 46
 
     # solutions
     print(f"\nRunning Solutions:")
@@ -132,8 +132,8 @@ def solve():
     print(f"\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    # answer2 = main(raw=files["input"], part=2)
-    # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+    answer2 = main(raw=files["input"], part=2)
+    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
 if __name__ == "__main__":

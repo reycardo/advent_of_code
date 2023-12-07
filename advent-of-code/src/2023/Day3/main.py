@@ -144,8 +144,8 @@ class Engine:
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    engine = Engine(input_parsed)
-    return engine.solve(part)
+    puzzle = Engine(input_parsed)
+    return puzzle.solve(part)
 
 
 def run_tests():

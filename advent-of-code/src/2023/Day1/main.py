@@ -107,7 +107,7 @@ class Calibration:
         """
         return int(str(first_digit) + str(last_digit))
 
-    def get_calib_doc(self, part: int) -> int:
+    def solve(self, part: int) -> int:
         """
         Get the calibration document value for a given part.
 
@@ -136,13 +136,8 @@ class Calibration:
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    calibration = Calibration(input_parsed)
-    if part == 1:
-        return calibration.get_calib_doc(part)
-    elif part == 2:
-        return calibration.get_calib_doc(part)
-    else:
-        raise ValueError("part must be 1 or 2, instead of: " + part)
+    puzzle = Calibration(input_parsed)
+    return puzzle.solve(part)
 
 
 def run_tests():
