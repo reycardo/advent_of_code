@@ -106,7 +106,8 @@ class Almanac:
             self.locations = list(map(self.get_location_from_seed, self.seeds))
             return min(self.locations)
         if part == 2:
-            return self.test_all_seeds()
+            pass
+            # return self.test_all_seeds() # NOT DOING THIS
 
 
 @timing_decorator
@@ -132,8 +133,8 @@ def solve():
     print(f"\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    answer2 = main(raw=files["input"], part=2)
-    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+    # answer2 = main(raw=files["input"], part=2)
+    # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
 if __name__ == "__main__":
