@@ -37,7 +37,9 @@
 1. Run `poetry install` to install all dependencies via poetry
 
 If you fail `poetry install` because of `lz4`, download:
+
 `https://visualstudio.microsoft.com/visual-cpp-build-tools/`
+
 And then, run this on the directory you downloaded `vs_buildtools.exe`:
 `vs_buildtools.exe --norestart --passive --downloadThenInstall --includeRecommended --add Microsoft.VisualStudio.Workload.NativeDesktop --add Microsoft.VisualStudio.Workload.VCTools --add Microsoft.VisualStudio.Workload.MSBuildTools`
 
