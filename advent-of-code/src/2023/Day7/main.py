@@ -11,13 +11,33 @@ files = get_txt_files(__file__)
 
 
 class Hand:
-    def __init__(self, row):
-        self.hand = row[0]
+    def __init__(self, row, part):
+        self.hand: str = row[0]
         self.bid = int(row[1])
-        self.check_hand_type()
-
-    def check_hand_type(self):
         self.hand_counts = Counter(self.hand)
+        self.check_hand_type(part)
+
+    def parse_jokers(self):
+        self.jokers = self.hand_counts.get("J", 0)
+        if self.jokers > 0:
+            # Remove 'J' from hand_counts
+            del self.hand_counts["J"]
+
+        # Find the character with the max count
+        max_char = (
+            max(self.hand_counts, key=self.hand_counts.get) if self.hand_counts else "J"
+        )
+
+        # Replace 'J' with max_char in the hand
+        self.hand_wild = self.hand.replace("J", max_char)
+
+        # Recalculate hand_counts
+        self.hand_counts = Counter(self.hand_wild)
+
+    def check_hand_type(self, part=1):
+        if part == 2:
+            self.parse_jokers()
+
         if max(self.hand_counts.values()) == 5:
             self.hand_type = "Five of a Kind"
         elif max(self.hand_counts.values()) == 4:
@@ -40,7 +60,36 @@ class Hand:
 
 
 class Puzzle:
-    card_order = ["A", "K", "Q", "J", "T", "9", "8", "7", "6", "5", "4", "3", "2"]
+    card_order = {
+        "A": 1,
+        "K": 2,
+        "Q": 3,
+        "J": 4,
+        "T": 5,
+        "9": 6,
+        "8": 7,
+        "7": 8,
+        "6": 9,
+        "5": 10,
+        "4": 11,
+        "3": 12,
+        "2": 13,
+    }
+    new_card_order = {
+        "A": 1,
+        "K": 2,
+        "Q": 3,
+        "T": 4,
+        "9": 5,
+        "8": 6,
+        "7": 7,
+        "6": 8,
+        "5": 9,
+        "4": 10,
+        "3": 11,
+        "2": 12,
+        "J": 13,
+    }
     hand_types = [
         "Five of a Kind",
         "Four of a Kind",
@@ -51,16 +100,16 @@ class Puzzle:
         "High Card",
     ]
 
-    def __init__(self, text_input):
+    def __init__(self, text_input, part):
         self.input = text_input
-        self.input_parsed = self.parse_input()
+        self.input_parsed = self.parse_input(part)
         self.organize_hands()
-        self.sort_hands_by_rank()
+        self.sort_hands_by_rank(part)
         self.order_all_hands()
         self.give_ranks_to_cards()
 
-    def parse_input(self):
-        return [Hand(row) for row in (item.split(" ") for item in self.input)]
+    def parse_input(self, part):
+        return [Hand(row, part) for row in (item.split(" ") for item in self.input)]
 
     def order_all_hands(self):
         self.ordered_hands: List[Hand] = (
@@ -107,38 +156,45 @@ class Puzzle:
 
     def compare_hands(self, hand1: Hand, hand2: Hand):
         for character1, character2 in zip(hand1.hand, hand2.hand):
-            if self.card_order.index(character1) < self.card_order.index(character2):
+            if self.card_order[character1] < self.card_order[character2]:
                 return 1
-            elif self.card_order.index(character1) > self.card_order.index(character2):
+            elif self.card_order[character1] > self.card_order[character2]:
                 return -1
-            else:
-                continue
         return 0
 
-    def sort_hands(self, hand_list):
-        return sorted(hand_list, key=cmp_to_key(self.compare_hands))
+    def compare_hands_new_order(self, hand1: Hand, hand2: Hand):
+        for character1, character2 in zip(hand1.hand, hand2.hand):
+            if self.new_card_order[character1] < self.new_card_order[character2]:
+                return 1
+            elif self.new_card_order[character1] > self.new_card_order[character2]:
+                return -1
+        return 0
 
-    def sort_hands_by_rank(self):
-        self.FIVE_OF_A_KIND = self.sort_hands(self.FIVE_OF_A_KIND)
-        self.FOUR_OF_A_KIND = self.sort_hands(self.FOUR_OF_A_KIND)
-        self.FULL_HOUSE = self.sort_hands(self.FULL_HOUSE)
-        self.THREE_OF_A_KIND = self.sort_hands(self.THREE_OF_A_KIND)
-        self.TWO_PAIR = self.sort_hands(self.TWO_PAIR)
-        self.ONE_PAIR = self.sort_hands(self.ONE_PAIR)
-        self.HIGH_CARD = self.sort_hands(self.HIGH_CARD)
+    def sort_hands(self, hand_list, comparison_method):
+        return sorted(hand_list, key=cmp_to_key(comparison_method))
+
+    def sort_hands_by_rank(self, part):
+        if part == 1:
+            compare_method = self.compare_hands
+        elif part == 2:
+            compare_method = self.compare_hands_new_order
+        self.FIVE_OF_A_KIND = self.sort_hands(self.FIVE_OF_A_KIND, compare_method)
+        self.FOUR_OF_A_KIND = self.sort_hands(self.FOUR_OF_A_KIND, compare_method)
+        self.FULL_HOUSE = self.sort_hands(self.FULL_HOUSE, compare_method)
+        self.THREE_OF_A_KIND = self.sort_hands(self.THREE_OF_A_KIND, compare_method)
+        self.TWO_PAIR = self.sort_hands(self.TWO_PAIR, compare_method)
+        self.ONE_PAIR = self.sort_hands(self.ONE_PAIR, compare_method)
+        self.HIGH_CARD = self.sort_hands(self.HIGH_CARD, compare_method)
 
     def solve(self, part):
-        if part == 1:
-            return self.get_total_winnings()
-        if part == 2:
-            pass
+        return self.get_total_winnings()
 
 
 @timing_decorator
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    puzzle = Puzzle(input_parsed)
+    puzzle = Puzzle(input_parsed, part)
     return puzzle.solve(part)
 
 
@@ -146,19 +202,21 @@ def run_tests():
     print(f"\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 6440
     assert main(raw=files["test"], part=2) == 5905
+    assert main(raw=files["test2"], part=2) == 78
+    assert main(raw=files["test3"], part=2) == 6839
 
     # solutions
     print(f"\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 253954294
-    # assert main(raw=files["input"], part=2) == 32607562
+    assert main(raw=files["input"], part=2) == 254837398
 
 
 def solve():
     print(f"\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    # answer2 = main(raw=files["input"], part=2)
-    # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+    answer2 = main(raw=files["input"], part=2)
+    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
 if __name__ == "__main__":
