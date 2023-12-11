@@ -1,8 +1,7 @@
 from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
 from enum import Enum
-from typing import Tuple
-import matplotlib.path as mplPath
+from typing import Tuple, List
 
 
 files = get_txt_files(__file__)
@@ -28,6 +27,7 @@ class Pipe:
         self.coords = coords
         self.assign_pipe_type()
         self.distance = None
+        self.inside = False
 
     def assign_pipe_type(self):
         for pipe_type in PipeType:
@@ -230,18 +230,33 @@ class Puzzle:
             side1.distance = side2.distance = steps
             self.loop.extend([side1, side2] if side1 != side2 else [side1])
 
+    def check_if_inside(self, row: List[Pipe]):
+        inside_bool = False
+        previous_type = row[0].pipe_type
+        for pipe in row[1:]:
+            if pipe in self.loop:
+                if pipe.pipe_type == PipeType.HORIZONTAL:
+                    continue
+                elif pipe.pipe_type == PipeType.VERTICAL:
+                    inside_bool = not inside_bool
+                elif (
+                    previous_type == PipeType.BEND_DOWN_RIGHT
+                    and pipe.pipe_type == PipeType.BEND_UP_LEFT
+                ):
+                    inside_bool = not inside_bool
+                elif (
+                    previous_type == PipeType.BEND_UP_RIGHT
+                    and pipe.pipe_type == PipeType.BEND_DOWN_LEFT
+                ):
+                    inside_bool = not inside_bool
+            else:
+                pipe.inside = inside_bool
+            previous_type = pipe.pipe_type
+
     def get_inside_points(self):
-        polygon = [(pipe.coords[0], pipe.coords[1]) for pipe in self.loop]
-        path = mplPath.Path(polygon)
-        boundaries = [pipe.coords for pipe in self.loop]
-        result = [
-            [
-                path.contains_point(pipe.coords)
-                for pipe in row
-                if pipe.coords not in boundaries
-            ]
-            for row in self.input_parsed
-        ]
+        for row in self.input_parsed:
+            self.check_if_inside(row)
+        result = [[pipe.inside for pipe in row] for row in self.input_parsed]
         return sum(value for sublist in result for value in sublist)
 
     def solve(self, part):
@@ -272,7 +287,7 @@ def run_tests():
     # solutions
     print(f"\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 6786
-    # assert main(raw=files["input"], part=2) == 1208
+    assert main(raw=files["input"], part=2) == 495
 
 
 def solve():
