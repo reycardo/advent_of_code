@@ -7,14 +7,44 @@ files = get_txt_files(__file__)
 #########
 
 
+class Sequence:
+    def __init__(self, sequence):
+        self.sequence = sequence
+        self.differences = self.get_all_differences()
+        self.extrapolated_sequence = self.extrapolate()
+
+    def get_difference_step(self, sequence):
+        return [sequence[i + 1] - sequence[i] for i in range(len(sequence) - 1)]
+
+    def get_all_differences(self):
+        sequence = self.sequence
+        differences = [sequence]
+        while not all(element == 0 for element in differences[-1]):
+            sequence = self.get_difference_step(sequence)
+            differences.append(sequence)
+        return differences
+
+    def extrapolate(self):
+        self.differences[-1].append(0)
+        for i in range(len(self.differences) - 1, 0, -1):
+            self.differences[i - 1].append(
+                self.differences[i][-1] + self.differences[i - 1][-1]
+            )
+        return self.differences[0]
+
+
 class Puzzle:
     def __init__(self, text_input):
         self.input = text_input
-        a = 1
+        self.input_parsed = self.parse_input()
+        self.sequences = [Sequence(seq) for seq in self.input_parsed]
+
+    def parse_input(self):
+        return [list(map(int, row.split(" "))) for row in self.input]
 
     def solve(self, part):
         if part == 1:
-            pass
+            return sum([seq.extrapolated_sequence[-1] for seq in self.sequences])
         if part == 2:
             pass
 
