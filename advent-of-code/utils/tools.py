@@ -3,6 +3,7 @@ import time
 from typing import Any, Callable
 from datetime import timedelta
 from utils.colors import green_color, cyan_color, reset_color
+from itertools import product
 
 
 def read_input(file, sep: str = "\n"):
@@ -12,6 +13,30 @@ def read_input(file, sep: str = "\n"):
 
 def flatten(t):
     return [item for sublist in t for item in sublist]
+
+
+def is_inside(matrix, coords: tuple):
+    if all(
+        (
+            coords[0] >= 0,
+            coords[0] < len(matrix[0]),
+            coords[1] >= 0,
+            coords[1] < len(matrix),
+        )
+    ):
+        return True
+    else:
+        return False
+
+
+def get_adjacents(matrix, coords: tuple):
+    for r_offset, c_offset in product(range(-1, 2), range(-1, 2)):  # get all offsets
+        if not (r_offset == 0 and c_offset == 0) and (
+            c_offset == 0 or r_offset == 0
+        ):  # if not own and not diagonal
+            adjacent = (coords[0] + r_offset, coords[1] + c_offset)
+            if is_inside(matrix, adjacent):
+                yield adjacent
 
 
 def get_txt_files(current_script_path):
