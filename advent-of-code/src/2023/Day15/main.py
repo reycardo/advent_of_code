@@ -103,7 +103,7 @@ def run_tests():
     # solutions
     print(f"\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 510273
-    # assert main(raw=files["input"], part=2) == 32607562
+    assert main(raw=files["input"], part=2) == 212449
 
 
 def solve():
