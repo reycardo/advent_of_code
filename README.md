@@ -14,6 +14,9 @@
 ![](https://img.shields.io/badge/2023_stars%20⭐-29-yellow)
 ![](https://img.shields.io/badge/2023_days%20completed-14-red)
 
+![](https://img.shields.io/badge/2024_stars%20⭐-2-yellow)
+![](https://img.shields.io/badge/2024_days%20completed-1-red)
+
 ## Quick start (Windows)
 
 ### Pyenv-win
