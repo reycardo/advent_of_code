@@ -6,17 +6,18 @@ files = get_txt_files(__file__)
 # Start #
 #########
 
+
 class Puzzle:
     def __init__(self, text_input):
         self.input = text_input
-        self.input_parsed = self.parse_input()   
+        self.input_parsed = self.parse_input()
         self.increases = self.get_increases()
-    
+
     def parse_input(self):
         return [list(map(int, row.split())) for row in self.input]
 
     def compare_elements(self, report):
-        return [x-y for x,y in zip(report, report[1:])]
+        return [x - y for x, y in zip(report, report[1:])]
 
     def get_increases(self):
         increases = []
@@ -25,30 +26,33 @@ class Puzzle:
         return increases
 
     def is_safe(self, lvl_increase):
-        if (all(x >= 1 for x in lvl_increase) and all(x <= 3 for x in lvl_increase)) or \
-            (all(x <= -1 for x in lvl_increase) and all(x >= -3 for x in lvl_increase)):
+        if (
+            all(x >= 1 for x in lvl_increase) and all(x <= 3 for x in lvl_increase)
+        ) or (
+            all(x <= -1 for x in lvl_increase) and all(x >= -3 for x in lvl_increase)
+        ):
             return True
-        else: 
+        else:
             return False
 
     def check_is_safe(self, part=1):
         self.safes = []
         self.unsafes = []
-        for report, lvl_increase in self.increases:            
+        for report, lvl_increase in self.increases:
             if self.is_safe(lvl_increase):
-                self.safes.append((report,lvl_increase))
+                self.safes.append((report, lvl_increase))
             else:
-                self.unsafes.append((report,lvl_increase))
+                self.unsafes.append((report, lvl_increase))
         if part == 2:
             for report, lvl_increase in self.unsafes:
-                for i in range(len(report)):                    
-                    new_report = report[:i] + report[i+1:]
+                for i in range(len(report)):
+                    new_report = report[:i] + report[i + 1 :]
                     new_lvl_increase = self.compare_elements(new_report)
                     if self.is_safe(new_lvl_increase):
                         self.safes.append((new_report, new_lvl_increase))
                         break
         return len(self.safes)
-                
+
     def solve(self, part):
         if part == 1:
             return self.check_is_safe(part=1)
@@ -61,7 +65,6 @@ def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
     puzzle = Puzzle(input_parsed)
-    puzzle.solve(part)
     return puzzle.solve(part)
 
 
