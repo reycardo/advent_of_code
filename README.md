@@ -1,6 +1,6 @@
 # Advent of Code challenge ⭐️
-![](https://img.shields.io/badge/2019_stars%20⭐-6-yellow)
-![](https://img.shields.io/badge/2019_days%20completed-3-red)
+![](https://img.shields.io/badge/2019_stars%20⭐-8-yellow)
+![](https://img.shields.io/badge/2019_days%20completed-4-red)
 
 ![](https://img.shields.io/badge/2020_stars%20⭐-19-yellow)
 ![](https://img.shields.io/badge/2020_days%20completed-9-red)
@@ -11,11 +11,11 @@
 ![](https://img.shields.io/badge/2022_stars%20⭐-26-yellow)
 ![](https://img.shields.io/badge/2022_days%20completed-13-red)
 
-![](https://img.shields.io/badge/2023_stars%20⭐-29-yellow)
-![](https://img.shields.io/badge/2023_days%20completed-14-red)
+![](https://img.shields.io/badge/2023_stars%20⭐-32-yellow)
+![](https://img.shields.io/badge/2023_days%20completed-15-red)
 
-![](https://img.shields.io/badge/2024_stars%20⭐-4-yellow)
-![](https://img.shields.io/badge/2024_days%20completed-2-red)
+![](https://img.shields.io/badge/2024_stars%20⭐-6-yellow)
+![](https://img.shields.io/badge/2024_days%20completed-3-red)
 
 ## Quick start (Windows)
 
