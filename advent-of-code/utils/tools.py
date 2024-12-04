@@ -173,6 +173,11 @@ class Point:
     def get_specific_neighbours(self, directions: list[Vectors]) -> list[Point]:
         """ Get neighbours, given a specific list of allowed locations """
         return [(self + Point(*vector.value)) for vector in list(directions)]
+    
+    def get_scaled_neighbours(self, directions: list[Vectors], scalar: int) -> list[Point]:
+        """ Get neighbours, given a specific list of allowed locations, scaled by a scalar """
+        return [(self + Point(vector.value[0] * scalar, vector.value[1] * scalar)) for vector in directions]
+
 
     @staticmethod
     def manhattan_distance(a_point: Point) -> int:
