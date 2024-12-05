@@ -99,11 +99,11 @@ class Puzzle:
     def solve(self, part):                
         self.validate_updates()
         if part == 1:            
-            self.midles = [update.get_midle() for update in self.valids]
+            self.middles = [update.get_midle() for update in self.valids]
         elif part == 2:
             self.ordered_invalids = [self.order_invalid_update(update) for update in self.updates if update not in self.valids]
-            self.midles = [update.get_midle() for update in self.ordered_invalids]
-        return sum(self.midles)
+            self.middles = [update.get_midle() for update in self.ordered_invalids]
+        return sum(self.middles)
             
 
 
