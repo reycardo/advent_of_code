@@ -1,6 +1,7 @@
 from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
 from collections import defaultdict
+from typing import List
 
 files = get_txt_files(__file__)
 #########
@@ -33,8 +34,8 @@ class Puzzle:
         self.input = text_input
         self.split_input()
         self.setup_page_boundaries()
-        self.valids = []
-        self.invalids = []
+        self.valids: List[Update] = []
+        self.invalids: List[Update] = []
 
     def split_input(self):
         separator_index = self.input.index("")
@@ -49,7 +50,7 @@ class Puzzle:
             self.page_uppers[rule.lower].append(rule.upper)
             self.page_lowers[rule.upper].append(rule.lower)
             
-    def validate_update(self, update):
+    def validate_update(self, update: Update):
         for page in update.pages:
             pages_to_the_right = update.pages[update.pages.index(page) + 1:]
             pages_to_the_left = update.pages[:update.pages.index(page)]
@@ -65,7 +66,7 @@ class Puzzle:
                     return False
         return True
 
-    def order_invalid_update(self, update):
+    def order_invalid_update(self, update: Update):
         for page in update.pages:
             pages_to_the_right = update.pages[update.pages.index(page) + 1:]
             pages_to_the_left = update.pages[:update.pages.index(page)]
@@ -98,7 +99,7 @@ class Puzzle:
     def solve(self, part):                
         self.validate_updates()
         if part == 1:            
-            self.midles = [update.get_midle() for update in self.valids]            
+            self.midles = [update.get_midle() for update in self.valids]
         elif part == 2:
             self.ordered_invalids = [self.order_invalid_update(update) for update in self.updates if update not in self.valids]
             self.midles = [update.get_midle() for update in self.ordered_invalids]
