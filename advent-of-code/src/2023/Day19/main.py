@@ -3,6 +3,7 @@ from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
 from typing import List
 
+
 files = get_txt_files(__file__)
 #########
 # Start #
@@ -57,6 +58,29 @@ class Step:
         else:
             part.outcome = self.output
 
+    # WIP
+    def solve_ranged(self, range: dict, total=0):
+        if self.condition:
+            category, operation, value = (
+                self.condition[0],
+                self.condition[1],
+                int(self.condition[2:]),
+            )
+            low, high = range[category]
+            true_split = (low, value - 1) if operation == "<" else (value + 1, high)
+            false_split = (low, value) if operation == ">" else (value, high)
+
+            if true_split[0] <= true_split[1]:  # workflow solved go to next
+                ranges_copy = dict(range)
+                ranges_copy[category] = true_split
+
+            if false_split[0] <= false_split[1]:  # move to next rule
+                range = dict(range)
+                range[category] = false_split
+
+        else:
+            pass
+
 
 class Workflow:
     def __init__(self, raw):
@@ -85,12 +109,21 @@ class Workflow:
 
         return part.outcome
 
+    def solve_ranged_workflow(self, range: dict, workflows: List[Workflow]):
+        workflow_map = {workflow.name: workflow for workflow in workflows}
+
+        for step in self.steps:
+            step.solve_ranged(range)
+
+        return
+
 
 class Puzzle:
     def __init__(self, text_input):
         self.input = text_input
         self.split_workflow_from_parts()
         self.start_workflow: Workflow = self.find_workflow_by_name("in")
+        self.range = {key: (1, 4000) for key in ["x", "m", "a", "s"]}
 
     def split_workflow_from_parts(self):
         separator_index = self.input.index("")
@@ -112,7 +145,9 @@ class Puzzle:
             return sum([part.xmas_rating for part in self.parts if part.outcome == "A"])
 
         if part == 2:
-            pass
+            self.start_workflow.solve_ranged_workflow(
+                range=self.range, workflows=self.workflows
+            )
 
 
 @timing_decorator
