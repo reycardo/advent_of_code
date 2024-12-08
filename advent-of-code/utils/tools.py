@@ -219,6 +219,13 @@ class VectorDicts():
         '<': Vectors.W.value
     }
 
+    REVERSE_ARROWS = {
+        '^': Vectors.S.value,
+        '>': Vectors.E.value,
+        'v': Vectors.N.value,
+        '<': Vectors.W.value
+    }
+
     DIRS = {
         'U': Vectors.N.value,
         'R': Vectors.E.value,
@@ -251,6 +258,7 @@ class Grid():
 
     def set_value_at_point(self, point: Point, value: int):
         self._array[point.y][point.x] = value
+
 
     def valid_location(self, point: Point) -> bool:
         """ Check if a location is within the grid """
