@@ -26,6 +26,7 @@
    ```pwsh
    Invoke-WebRequest -UseBasicParsing -Uri "https://raw.githubusercontent.com/pyenv-win/pyenv-win/master/pyenv-win/install-pyenv-win.ps1" -OutFile "./install-pyenv-win.ps1"; &"./install-pyenv-win.ps1"
    ```
+1. if error run `Set-ExecutionPolicy -ExecutionPolicy Unrestricted -Scope CurrentUser`
 1. Reopen PowerShell
 1. Run `pyenv --version` to check if the installation was successful.
 1. Run `type .python-version` to check what python version this repo uses
