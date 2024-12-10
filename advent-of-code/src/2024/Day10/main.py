@@ -18,17 +18,19 @@ class Trailhead:
         self.trails = []
         self.pt2_score = None
 
-    def find_trails(self, grid: Grid):
-        current_point = self.head
+    def find_trails(self, grid: Grid):        
         queue = deque()
-        queue.append((current_point, 0, [current_point]))  # current_point, count, trail        
+        queue.append((self.head, 0, [self.head]))  # current_point, count, trail        
         while queue:
+            current_point: Point
+            count: int
+            trail: List[Point]
             current_point, count, trail = queue.popleft()
             neighbours = current_point.get_specific_neighbours(directions=directions)
             for neighbour in neighbours:                
-                if grid.valid_location(neighbour) and grid.value_at_point(neighbour) == count + 1:
+                if grid.valid_location(neighbour) and grid.value_at_point(neighbour) == count + 1: # checks if neighbour is valid and uphill slope (+1)
                     new_trail = trail + [neighbour]
-                    if count + 1 == 9:
+                    if count + 1 == 9: # add to trails when neighbour is 9
                         self.trails.append(new_trail)
                     else:
                         queue.append((neighbour, count + 1, new_trail))
