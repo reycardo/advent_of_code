@@ -10,59 +10,72 @@ files = get_txt_files(__file__)
 # Start #
 #########
 
-class Stone:
-    def __init__(self, value, position):
-        self.value = value
-        self.position = position
 
-    def blink(self, stones: List[Stone]):
+class Stone:
+    def __init__(self, value):
+        self.value = value
+
+    def blink(self):
+        string_value = str(self.value)
         if self.value == 0:
-            self.value = 1
-        elif len(str(self.value)) % 2:
-            stones[self.position:]
+            return [Stone(1)]
+        elif len(string_value) % 2 == 0:
+            left = int(string_value[: len(string_value) // 2])
+            right = int(string_value[len(string_value) // 2 :])
+            return [Stone(left), Stone(right)]
+        else:
+            return [Stone(self.value * 2024)]
 
 
 class Puzzle:
-    
     def __init__(self, text_input):
         self.input = text_input[0]
-        self.input_parsed = list(map(int,self.input.split()))
+        self.input_parsed = list(map(int, self.input.split()))
+        self.init_stones()
+        self.blinks = 0
 
     def init_stones(self):
-        self.stones = [Stone(i, idx) for idx, i in enumerate(self.input_parsed)]
+        self.stones = [Stone(i) for i in self.input_parsed]
 
-    def solve(self, part):
-        if part == 1:
-            pass
-        elif part == 2:
-            pass
+    def blink(self):
+        new_stones = []
+        for stone in self.stones:
+            new_stones.extend(stone.blink())
+
+        self.stones = new_stones
+        self.blinks += 1
+
+    def solve(self, part, blinks):
+        for _ in range(blinks):
+            self.blink()
+
+        return len(self.stones)
 
 
 @timing_decorator
-def main(raw, part):
+def main(raw, part, blinks):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
     puzzle = Puzzle(input_parsed)
-    return puzzle.solve(part)
+    return puzzle.solve(part, blinks)
 
 
 def run_tests():
-    print(f"\nRunning Tests:")    
-    assert main(raw=files["test"], part=1) == 55312
-    # assert main(raw=files["test"], part=2) == 81
-    
+    print(f"\nRunning Tests:")
+    assert main(raw=files["test"], part=1, blinks=6) == 22
+    assert main(raw=files["test"], part=1, blinks=25) == 55312
 
     # solutions
-    # print(f"\nRunning Solutions:")
-    # assert main(raw=files["input"], part=1) == 717
+    print(f"\nRunning Solutions:")
+    assert main(raw=files["input"], part=1, blinks=25) == 188902
     # assert main(raw=files["input"], part=2) == 1686
 
 
 def solve():
     print(f"\nSolving:")
-    answer1 = main(raw=files["input"], part=1)
+    answer1 = main(raw=files["input"], part=1, blinks=25)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    # answer2 = main(raw=files["input"], part=2)
+    # answer2 = main(raw=files["input"], part=2, blinks=75)
     # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
