@@ -4,7 +4,6 @@ from dataclasses import dataclass, field
 from itertools import groupby
 import re
 from typing import List, Optional
-import cvxpy as cp  # required cylp install for CBC solver
 
 
 files = get_txt_files(__file__)
@@ -13,7 +12,7 @@ files = get_txt_files(__file__)
 #########
 
 
-@dataclass(frozen=True)
+@dataclass
 class ClawMachine:
     button_A: List[int]
     button_B: List[int]
@@ -22,56 +21,43 @@ class ClawMachine:
         3,
         1,
     ]  # it costs 3 tokens to push the A button and 1 token to push the B button.
-    boundaries = [
-        (0, 100),
-        (0, 100),
-    ]  # Each button would need to be pressed no more than 100 times to win a prize
     possible: Optional[bool] = field(default=None, init=False)
     tokens_used: Optional[int] = field(default=None, init=False)
     solution: Optional[List[int]] = field(default=None, init=False)
 
+    # solve the problem as soon as the object is created
     def __post_init__(self):
-        self._optimize()
+        self._solve()
 
-    @property
-    def lhs(self) -> List[List[int]]:
-        return self._transpose([self.button_A] + [self.button_B])
+    def _solve(self):
+        a1, b1, c1 = self.button_A[0], self.button_B[0], self.prize[0]
+        a2, b2, c2 = self.button_A[1], self.button_B[1], self.prize[1]
 
-    def _transpose(self, matrix):
-        return [list(row) for row in zip(*matrix)]
+        determinant = a1 * b2 - a2 * b1
 
-    def _optimize(self):
-        # Define the variables
-        a = cp.Variable(integer=True)
-        b = cp.Variable(integer=True)
+        if determinant == 0:
+            self.possible = False
+            self.tokens_used = None
+            self.solution = None
+        else:
+            a = (c1 * b2 - c2 * b1) / determinant
+            b = (a1 * c2 - a2 * c1) / determinant
 
-        objective = cp.Minimize(3 * a + b)
-
-        # Define the constraints
-        constraints = [
-            a * lhs[0] + lhs[1] * b == prize for lhs, prize in zip(self.lhs, self.prize)
-        ]
-
-        # Define the problem
-        problem = cp.Problem(objective, constraints)
-
-        # Solve the problem
-        problem.solve(solver=cp.CBC)
-
-        # Extract the results
-        possible = problem.status == cp.OPTIMAL
-        solution = [a.value, b.value] if possible else None
-        tokens_used = problem.value if possible else None
-
-        object.__setattr__(self, "possible", possible)
-        object.__setattr__(self, "tokens_used", int(tokens_used) if possible else None)
-        object.__setattr__(self, "solution", solution if possible else None)
+            if a >= 0 and b >= 0 and a.is_integer() and b.is_integer():
+                a, b = int(a), int(b)
+                self.possible = True
+                self.tokens_used = self.tokens_cost[0] * a + self.tokens_cost[1] * b
+                self.solution = [a, b]
+            else:
+                self.possible = False
+                self.tokens_used = None
+                self.solution = None
 
 
 class Puzzle:
     def __init__(self, text_input, part):
         self.input = text_input
-        self.part = part
+        self.increment_prize = 0 if part == 1 else 10000000000000
         self.input_parsed = self.split_by_machines()
         self.claw_machines = self.create_claw_machines()
 
@@ -87,38 +73,27 @@ class Puzzle:
             ClawMachine(
                 button_A=self.extract_values(instruction[0]),
                 button_B=self.extract_values(instruction[1]),
-                prize=self.extract_values(instruction[2], increment=True)
-                if self.part == 2
-                else self.extract_values(instruction[2]),
+                prize=self.extract_values(
+                    instruction[2], increment=self.increment_prize
+                ),
             )
             for instruction in self.input_parsed
         ]
 
-    def extract_values(self, input_string, increment=False):
+    def extract_values(self, input_string, increment=0):
         # Use regular expression to find all numbers in the string
         values = re.findall(r"\d+", input_string)
         # Convert the extracted values to integers
-        if increment:
-            return list(map(lambda x: x + 10000000000000, map(int, values)))
-        return list(map(int, values))
+        return list(map(lambda x: x + increment, map(int, values)))
 
     def solve(self, part):
-        if part == 1:
-            return sum(
-                [
-                    claw_machine.tokens_used
-                    for claw_machine in self.claw_machines
-                    if claw_machine.possible
-                ]
-            )
-        elif part == 2:
-            return sum(
-                [
-                    claw_machine.tokens_used
-                    for claw_machine in self.claw_machines
-                    if claw_machine.possible
-                ]
-            )
+        return sum(
+            [
+                claw_machine.tokens_used
+                for claw_machine in self.claw_machines
+                if claw_machine.possible
+            ]
+        )
 
 
 @timing_decorator
@@ -132,12 +107,14 @@ def main(raw, part):
 def run_tests():
     print(f"\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 480
-    assert main(raw=files["test"], part=2) == 459236326669 + 416082282239
+    assert (
+        main(raw=files["test"], part=2) == 459236326669 + 416082282239
+    )  # calculated before # 2nd and 4th claw machines are the only ones with valid solutions
 
     # solutions
     print(f"\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 31623
-    # assert main(raw=files["input"], part=2) == 1686
+    assert main(raw=files["input"], part=2) == 93209116744825
 
 
 def solve():
