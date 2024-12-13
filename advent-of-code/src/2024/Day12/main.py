@@ -66,7 +66,7 @@ class Region:
         return f"Region(type={self.plot_type},area={self.area},perimeter={self.perimeter},price={self.price},sides={self.sides},new_price={self.new_price})"
 
 
-class Garden(Grid):
+class Puzzle(Grid):
     DIRECTIONS = [Vectors.N.value, Vectors.E.value, Vectors.S.value, Vectors.W.value]
 
     def __init__(self, grid_array):
@@ -110,7 +110,7 @@ class Garden(Grid):
         perimeter = 0
 
         perimeter_edges: Dict[Tuple[int], Set[Point]] = {}
-        for dirn in Garden.DIRECTIONS:  # N, E, S, W
+        for dirn in Puzzle.DIRECTIONS:  # N, E, S, W
             perimeter_edges[dirn] = set()
 
         while queue:
@@ -122,7 +122,7 @@ class Garden(Grid):
 
             for (
                 dirn
-            ) in Garden.DIRECTIONS:  # Get the neighbours, one direction at a time
+            ) in Puzzle.DIRECTIONS:  # Get the neighbours, one direction at a time
                 neighbour = current + Point(*dirn)
 
                 # If the neighbour is valid and of same type, it's in the same region so queue it
@@ -153,7 +153,7 @@ class Garden(Grid):
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    puzzle = Garden(input_parsed)
+    puzzle = Puzzle(input_parsed)
     return puzzle.solve(part)
 
 
