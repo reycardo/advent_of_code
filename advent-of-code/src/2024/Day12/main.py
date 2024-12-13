@@ -1,8 +1,8 @@
 from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
-from utils.tools import Grid, Point
-from typing import List
+from utils.tools import Grid, Point, Vectors
+from typing import List, Dict, Set, Tuple
 from collections import deque
 from dataclasses import dataclass
 
@@ -15,8 +15,9 @@ files = get_txt_files(__file__)
 @dataclass(frozen=True)
 class Region:
     plot_type: str
-    plots: set[Point]
+    plots: Set[Point]
     perimeter: int
+    perimeter_edges: dict[Point, Set[Point]]
 
     @property
     def area(self) -> int:
@@ -26,11 +27,48 @@ class Region:
     def price(self) -> int:
         return self.area * self.perimeter
 
+    @property
+    def new_price(self) -> int:
+        return self.area * self.sides
+
+    @property
+    def sides(self) -> int:
+        return self._calculate_sides()
+
+    def _calculate_sides(self) -> int:
+        sides = 0
+
+        # Iterate over sets for N, E, S, W...
+        for (
+            side
+        ) in self.perimeter_edges.values():  # All plots facing a particular direction
+            seen = set()
+
+            for point in side:
+                if point not in seen:
+                    sides += 1  # This plot is in a new side
+
+                    # Here we use BFS to flood fill all members of the same side
+                    q = deque([point])
+                    while q:
+                        current = q.popleft()
+                        if current in seen:
+                            continue  # Stop us indefinitely queuing neighbours!
+
+                        seen.add(current)  # Add this connected plot to seen
+                        for neighbour in current.neighbours(include_diagonals=False):
+                            if neighbour in side:  # Adjacent, so part of SAME side
+                                q.append(neighbour)
+
+        return sides
+
     def __str__(self):
-        return f"Region(type={self.plot_type},area={self.area},perimeter={self.perimeter},price={self.price})"
+        return f"Region(type={self.plot_type},area={self.area},perimeter={self.perimeter},price={self.price},sides={self.sides},new_price={self.new_price})"
 
 
 class Garden(Grid):
+    DIRECTIONS = [Vectors.N.value, Vectors.E.value, Vectors.S.value, Vectors.W.value]
+
     def __init__(self, grid_array):
         super().__init__(grid_array)
 
@@ -49,8 +87,10 @@ class Garden(Grid):
                 continue  # We've done this one
 
             region_type = self.value_at_point(point)
-            region_plots, perimeter = self._flood_fill_for_origin(point)
-            region = Region(region_type, region_plots, perimeter)
+            region_plots, perimeter, perimeter_edges = self._flood_fill_for_origin(
+                point
+            )
+            region = Region(region_type, region_plots, perimeter, perimeter_edges)
             regions.append(region)
 
             allocated.update(region_plots)
@@ -60,8 +100,8 @@ class Garden(Grid):
     def _flood_fill_for_origin(self, origin: Point):
         region_type = self.value_at_point(origin)
 
-        frontier: deque[Point] = deque()  # Very efficient for FIFO queueing
-        frontier.append(origin)
+        queue: deque[Point] = deque()
+        queue.append(origin)
 
         seen = set()
         seen.add(origin)
@@ -69,38 +109,44 @@ class Garden(Grid):
         plots = set()
         perimeter = 0
 
-        while frontier:
-            current: Point = frontier.popleft()  # BFS
+        perimeter_edges: Dict[Tuple[int], Set[Point]] = {}
+        for dirn in Garden.DIRECTIONS:  # N, E, S, W
+            perimeter_edges[dirn] = set()
+
+        while queue:
+            current: Point = queue.popleft()  # BFS
             current_val = self.value_at_point(current)
 
-            if current_val == region_type:
+            if current_val == region_type:  # This plot is in our region
                 plots.add(current)
 
-            # Get valid neighbours
-            neighbours = [
-                neighbour
-                for neighbour in current.neighbours(include_diagonals=False)
+            for (
+                dirn
+            ) in Garden.DIRECTIONS:  # Get the neighbours, one direction at a time
+                neighbour = current + Point(*dirn)
+
+                # If the neighbour is valid and of same type, it's in the same region so queue it
                 if (
                     self.valid_location(neighbour)
                     and self.value_at_point(neighbour) == region_type
-                )
-            ]
+                ):
+                    if neighbour not in seen:
+                        queue.append(neighbour)
+                        seen.add(neighbour)
 
-            # For every neighbour that isn't valid, we have established a perimeter unit
-            perimeter += 4 - len(neighbours)
+                else:  # this neighbour represents a perimeter
+                    perimeter += 1
+                    perimeter_edges[dirn].add(
+                        current
+                    )  # Add the current plot as a perimeter plot
 
-            for next in neighbours:
-                if next not in seen:
-                    frontier.append(next)
-                    seen.add(next)
-
-        return plots, perimeter
+        return plots, perimeter, perimeter_edges
 
     def solve(self, part):
         if part == 1:
             return sum([x.price for x in self.regions])
         elif part == 2:
-            pass
+            return sum([x.new_price for x in self.regions])
 
 
 @timing_decorator
@@ -130,7 +176,7 @@ def run_tests():
     # solutions
     print(f"\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 1464678
-    # assert main(raw=files["input"], part=2) == 1686
+    assert main(raw=files["input"], part=2) == 877492
 
 
 def solve():
