@@ -244,6 +244,24 @@ class Vectors(Enum):
         x, y = self.value
         return (x, -y)
 
+class InvertedVectors(Enum):
+    """Enumeration of 8 directions.
+    Note: y axis increments in the South direction, i.e. N = (0, -1)"""
+
+    N = (0, -1)
+    NE = (1, -1)
+    E = (1, 0)
+    SE = (1, 1)
+    S = (0, 1)
+    SW = (-1, 1)
+    W = (-1, 0)
+    NW = (-1, -1)
+
+    @property
+    def y_inverted(self):
+        """Return vector, but with y-axis inverted. I.e. N = (0, 1)"""
+        x, y = self.value
+        return (x, -y)
 
 class VectorDicts:
     """Contains constants for Vectors"""
