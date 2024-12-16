@@ -158,7 +158,7 @@ class Puzzle:
 
             if debug == True:
                 print(f"{self.reindeer.score=}")
-                self.paint_grid(grid, new_trail)
+                self.paint_grid(grid, current_node.trail)
                 print(f"{self.reindeer.pos} = {explored[self.reindeer.pos]=}")
 
             for next in self.reindeer.available_options(grid=grid):
@@ -215,11 +215,11 @@ def main(raw, part):
 
 def run_tests():
     print(f"\nRunning Tests:")
-    assert main(raw=files["test5"], part=1) == 4013
     assert main(raw=files["test"], part=1) == 7036
     assert main(raw=files["test2"], part=1) == 11048
     assert main(raw=files["test3"], part=1) == 21148
     assert main(raw=files["test4"], part=1) == 1004
+    assert main(raw=files["test5"], part=1) == 4013
     assert main(raw=files["test"], part=2) == 45
     assert main(raw=files["test2"], part=2) == 64
 
