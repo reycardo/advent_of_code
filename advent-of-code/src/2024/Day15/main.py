@@ -17,88 +17,86 @@ class Robot:
         self.pos = pos
         self.moves = moves
 
-    # TODO: move by directions: left right uses old move
-    # TODO: move by directions: up down uses new move
-    # TODO: fix deque: going up or down checks available spaces above each box
-    def move(self, grid: Grid):
+    def set_robot_at_pos(self, pos: Point, grid: Grid):
+        grid.set_value_at_point(self.pos, Puzzle.SPACE)
+        self.pos = pos
+        grid.set_value_at_point(pos, Puzzle.ROBOT)
+
+    def move(self, grid: Grid, part):
+        current_pos = self.pos
         for move in self.moves:
-            """can not move if between the next wall and the robot there is no space
-            get all points between the robot and the next wall
-            check if there is a space between them
-            if there is a space move the robot"""
-            points_between = self.get_points_between_robot_and_wall(
-                grid=grid, move=move
-            )
-            # find first space between robot and wall
-            space_index = next(
-                (
-                    i
-                    for i, point in enumerate(points_between)
-                    if point[1] == Puzzle.SPACE
-                ),
-                None,
-            )
-            if space_index is not None:
-                # move everything until space_index
-                grid.set_value_at_point(
-                    points_between[0][0], Puzzle.SPACE
-                )  # set robot to space
-                self.pos = points_between[1][0]  # set robot to next position
-                for i in range(space_index):
+            direction = Point(*Puzzle.DIRECTIONS[move])
+            new_pos = current_pos + direction
+            if grid.value_at_point(new_pos) == Puzzle.SPACE:
+                current_pos = new_pos
+                self.set_robot_at_pos(new_pos, grid=grid)
+            elif grid.value_at_point(new_pos) == Puzzle.WALL:
+                continue
+            elif part == 1 or direction.x:
+                look_ahead = new_pos
+                while grid.value_at_point(look_ahead) in "O[]":
+                    look_ahead += direction
+                if grid.value_at_point(look_ahead) == Puzzle.WALL:
+                    continue
+                while look_ahead != new_pos:
                     grid.set_value_at_point(
-                        points_between[i + 1][0], points_between[i][1]
+                        look_ahead, grid.value_at_point(look_ahead - direction)
                     )
+                    look_ahead -= direction
+                grid.set_value_at_point(new_pos, Puzzle.SPACE)
+                current_pos = new_pos
+                self.set_robot_at_pos(new_pos, grid=grid)
+            elif self.can_vertical_push(new_pos, direction, grid=grid):
+                self.do_vertical_push(new_pos, direction, grid=grid)
+                current_pos = new_pos
+                self.set_robot_at_pos(new_pos, grid=grid)
 
-    def move_p2(self, grid: Grid):
-        for move in self.moves:
-            """can only move if between the next wall and the robot is available space
-            for each box that would get moved along with the robot
-            check if there is a space between them
-            if there is a space move the robot"""
-            points_between = self.get_points_between_X_and_wall_p2(grid=grid, move=move)
-            # find first space between robot and wall
-            space_index = next(
-                (
-                    i
-                    for i, point in enumerate(points_between)
-                    if point[1] == Puzzle.SPACE
-                ),
-                None,
-            )
-            if space_index is not None:
-                # move everything until space_index
-                grid.set_value_at_point(
-                    points_between[0][0], Puzzle.SPACE
-                )  # set robot to space
-                self.pos = points_between[1][0]  # set robot to next position
-                for i in range(space_index):
-                    grid.set_value_at_point(
-                        points_between[i + 1][0], points_between[i][1]
-                    )
+    def can_vertical_push(self, pos: Point, dir: Point, grid: Grid):
+        adj_pos = (
+            Puzzle.DIRECTIONS[">"]
+            if grid.value_at_point(pos) == "["
+            else Puzzle.DIRECTIONS["<"]
+        )
+        adj_pos = Point(*adj_pos)
+        new_pos = pos + dir
+        if (
+            grid.value_at_point(new_pos) == "#"
+            or grid.value_at_point(new_pos + adj_pos) == "#"
+        ):
+            return False
 
-    def get_points_between_robot_and_wall(self, grid: Grid, move: str):
-        points_between = [(self.pos, grid.value_at_point(self.pos))]
-        next_pos = self.pos + Point(*Puzzle.DIRECTIONS[move])
-        while grid.value_at_point(next_pos) != Puzzle.WALL:
-            points_between.append((next_pos, grid.value_at_point(next_pos)))
-            next_pos = next_pos + Point(*Puzzle.DIRECTIONS[move])
-        return points_between
+        if grid.value_at_point(new_pos) in "[]" and not self.can_vertical_push(
+            new_pos, dir, grid=grid
+        ):
+            return False
 
-    def get_points_between_X_and_wall_p2(self, grid: Grid, move: str, X_pos: Point):
-        points_between = [(X_pos, grid.value_at_point(X_pos))]
-        next_pos = X_pos + Point(*Puzzle.DIRECTIONS[move])
-        # check if there is a BIGBOX in the way
-        # if there is a BIGBOX in the way, also check the points between the BIGBOX and the next wall
-        if grid.value_at_point(next_pos) == Puzzle.BIGBOX_LEFT:
-            points_between.extend(
-                self.get_points_between_X_and_wall_p2(
-                    grid=grid, move=move, next_pos=(next_pos)
-                )
-            )
-        while grid.value_at_point(next_pos) != Puzzle.WALL:
-            points_between.append((next_pos, grid.value_at_point(next_pos)))
-            next_pos = next_pos + Point(*Puzzle.DIRECTIONS[move])
-        return points_between
+        if grid.value_at_point(
+            new_pos + adj_pos
+        ) in "[]" and not self.can_vertical_push(new_pos + adj_pos, dir, grid=grid):
+            return False
+        return True
+
+    def do_vertical_push(self, pos: Point, dir: Point, grid: Grid):
+        adj_pos = (
+            Puzzle.DIRECTIONS[">"]
+            if grid.value_at_point(pos) == Puzzle.BIGBOX_LEFT
+            else Puzzle.DIRECTIONS["<"]
+        )
+        adj_pos = Point(*adj_pos)
+        new_pos = pos + dir
+        if grid.value_at_point(new_pos) in (Puzzle.BIGBOX_LEFT, Puzzle.BIGBOX_RIGHT):
+            self.do_vertical_push(new_pos, dir, grid=grid)
+
+        if grid.value_at_point(new_pos + adj_pos) in (
+            Puzzle.BIGBOX_LEFT,
+            Puzzle.BIGBOX_RIGHT,
+        ):
+            self.do_vertical_push(new_pos + adj_pos, dir, grid=grid)
+
+        grid.set_value_at_point(new_pos, grid.value_at_point(pos))
+        grid.set_value_at_point(new_pos + adj_pos, grid.value_at_point(pos + adj_pos))
+        grid.set_value_at_point(pos, Puzzle.SPACE)
+        grid.set_value_at_point(pos + adj_pos, Puzzle.SPACE)
 
 
 class Puzzle:
@@ -120,16 +118,16 @@ class Puzzle:
         self.grid = Grid([list(raw) for raw in self.input[:separator_index]])
         self.moves = "".join([raw for raw in self.input[separator_index + 1 :]])
 
-    def find_robot(self):
-        for point in self.grid._all_points:
-            if self.grid.value_at_point(point) == Puzzle.ROBOT:
+    def find_robot(self, grid: Grid):
+        for point in grid._all_points:
+            if grid.value_at_point(point) == Puzzle.ROBOT:
                 self.robot = Robot(point, self.moves)
                 break
 
-    def get_gps_coordinates(self):
+    def get_gps_coordinates(self, grid: Grid):
         self.gps_coordinates = []
-        for point in self.grid._all_points:
-            if self.grid.value_at_point(point) == Puzzle.BOX:
+        for point in grid._all_points:
+            if grid.value_at_point(point) in (Puzzle.BOX, Puzzle.BIGBOX_LEFT):
                 self.gps_coordinates.append(point.x + point.y * 100)
 
     def expand_grid(self):
@@ -144,12 +142,15 @@ class Puzzle:
 
     def solve(self, part):
         if part == 1:
-            self.find_robot()
-            self.robot.move(self.grid)
-            self.get_gps_coordinates()
+            self.find_robot(self.grid)
+            self.robot.move(self.grid, part=1)
+            self.get_gps_coordinates(grid=self.grid)
             return sum(self.gps_coordinates)
         elif part == 2:
-            pass
+            self.find_robot(self.expanded_grid)
+            self.robot.move(self.expanded_grid, part=2)
+            self.get_gps_coordinates(grid=self.expanded_grid)
+            return sum(self.gps_coordinates)
 
 
 @timing_decorator
@@ -162,14 +163,15 @@ def main(raw, part):
 
 def run_tests():
     print(f"\nRunning Tests:")
-    assert main(raw=files["test3"], part=2) == 9021
+    assert main(raw=files["test"], part=2) == 9021
+    assert main(raw=files["test3"], part=2) == 105 + 207 + 306
     assert main(raw=files["test2"], part=1) == 2028
     assert main(raw=files["test"], part=1) == 10092
 
     # solutions
     print(f"\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 1475249
-    # assert main(raw=files["input"], part=2) == 6398
+    assert main(raw=files["input"], part=2) == 1509724
 
 
 def solve():
