@@ -3,6 +3,7 @@ from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
 from utils.tools import Point, Grid, Vectors
 from typing import List
+from collections import deque
 
 
 files = get_txt_files(__file__)
@@ -41,6 +42,7 @@ class Reindeer:
         next_pos = self.pos + self._facing
         return grid.value_at_point(next_pos) != Puzzle.WALL
 
+#TODO: Implement Stack frontier then compare all paths what has lowest score
 class Puzzle:
     SPACE = "."
     WALL = "#"
