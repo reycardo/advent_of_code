@@ -1,7 +1,7 @@
 from __future__ import annotations
 import os
 import time
-from typing import Any, Callable
+from typing import Any, Callable, Union, Tuple
 from datetime import timedelta
 from utils.colors import green_color, cyan_color, reset_color
 from itertools import product
@@ -139,12 +139,33 @@ class Point:
     x: int
     y: int
 
+    def __init__(self, x: Union[int, Tuple[int, int]], y: int = None):
+        if isinstance(x, tuple):
+            object.__setattr__(self, 'x', x[0])
+            object.__setattr__(self, 'y', x[1])
+        else:
+            object.__setattr__(self, 'x', x)
+            object.__setattr__(self, 'y', y)
+
     def __add__(self, other: Point):
         return Point(self.x + other.x, self.y + other.y)
 
     def __mul__(self, other: Point):
         """(x, y) * (a, b) = (xa, yb)"""
         return Point(self.x * other.x, self.y * other.y)
+
+    def __mul__(self, other: Union['Point', int]):
+        """Multiply by another Point or a scalar
+        (x, y) * (a, b) = (xa, yb)
+        or
+        (x, y) * a = (xa, ya)
+        """
+        if isinstance(other, Point):
+            return Point(self.x * other.x, self.y * other.y)
+        elif isinstance(other, int):
+            return Point(self.x * other, self.y * other)
+        else:
+            return NotImplemented
 
     def __sub__(self, other: Point):
         return self + Point(-other.x, -other.y)
