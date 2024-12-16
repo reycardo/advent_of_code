@@ -162,10 +162,10 @@ def main(raw, part):
 
 def run_tests():
     print(f"\nRunning Tests:")
-    assert main(raw=files["test"], part=2) == 9021
-    assert main(raw=files["test3"], part=2) == 105 + 207 + 306
-    assert main(raw=files["test2"], part=1) == 2028
     assert main(raw=files["test"], part=1) == 10092
+    assert main(raw=files["test2"], part=1) == 2028
+    assert main(raw=files["test3"], part=2) == 105 + 207 + 306
+    assert main(raw=files["test"], part=2) == 9021
 
     # solutions
     print(f"\nRunning Solutions:")
