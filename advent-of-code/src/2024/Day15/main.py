@@ -2,8 +2,7 @@ from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
 from utils.tools import Point, Grid, VectorDicts
-from typing import Tuple, List
-from collections import deque
+from typing import List
 
 
 files = get_txt_files(__file__)
