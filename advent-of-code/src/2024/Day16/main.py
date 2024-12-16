@@ -141,7 +141,7 @@ class Puzzle:
         trails = []
 
         while frontier:
-            current_node: Node = frontier.popleft()  # Depth-First search
+            current_node: Node = frontier.popleft()  # Breadth-First Search
 
             # Restore the reindeer's state
             self.reindeer.restore_state(current_node)
