@@ -22,19 +22,15 @@ class Reindeer:
         self.last_rotation = None
 
     def rotate_cw(self, count: bool = True):
-        self._directions_idx = (self._directions_idx + 1) % len(
-            Puzzle.DIRECTIONS
-        )
+        self._directions_idx = (self._directions_idx + 1) % len(Puzzle.DIRECTIONS)
         self._facing = Point(Puzzle.DIRECTIONS[self._directions_idx].value)
         if count:
             self.score += 1000
             self.last_rotation = "cw"
-        
+
     def rotate_ccw(self, count: bool = True):
-        self._directions_idx = (self._directions_idx - 1) % len(
-            Puzzle.DIRECTIONS
-        )
-        self._facing = Point(Puzzle.DIRECTIONS[self._directions_idx].value)        
+        self._directions_idx = (self._directions_idx - 1) % len(Puzzle.DIRECTIONS)
+        self._facing = Point(Puzzle.DIRECTIONS[self._directions_idx].value)
         if count:
             self.score += 1000
             self.last_rotation = "ccw"
@@ -46,7 +42,7 @@ class Reindeer:
     def can_move(self, grid: Grid):
         next_pos = self.pos + self._facing
         return grid.value_at_point(next_pos) != Puzzle.WALL
-    
+
     def move_back(self):
         self.pos = self.pos - self._facing
         self.score -= 1
@@ -63,9 +59,13 @@ class Reindeer:
     def restore_state(self, node: Node):
         self.pos = node.pos
         self.score = node.score
-        self._facing = node.facing        
-        self._directions_idx = next(i for i, direction in enumerate(Puzzle.DIRECTIONS) if direction.value == (node.facing.x, node.facing.y))
-    
+        self._facing = node.facing
+        self._directions_idx = next(
+            i
+            for i, direction in enumerate(Puzzle.DIRECTIONS)
+            if direction.value == (node.facing.x, node.facing.y)
+        )
+
     def available_options(self, grid: Grid):
         """the options are move forward facing self._facing, rotate cw and move forward or rotate ccw and move forward
         can only move if the next position is not a wall"""
@@ -75,19 +75,20 @@ class Reindeer:
         # Test if can move forward
         if self.can_move(grid=grid):
             options.append([self.move])
-        
+
         # Test if can move right
         self.rotate_cw(count=False)
         if self.can_move(grid=grid):
             options.append([self.rotate_cw, self.move])
         self.rotate_ccw(count=False)
-        
+
         # Test if can move left
         self.rotate_ccw(count=False)
         if self.can_move(grid=grid):
             options.append([self.rotate_ccw, self.move])
         self.rotate_cw(count=False)
         return options
+
 
 class Node:
     def __init__(self, pos: Point, score: int, facing: Point, trail: List[Point]):
@@ -97,13 +98,18 @@ class Node:
         self.trail = trail
 
 
-#TODO: Implement Stack frontier then compare all paths what has lowest score
+# TODO: Implement Stack frontier then compare all paths what has lowest score
 class Puzzle:
     SPACE = "."
     WALL = "#"
     START = "S"
     END = "E"
-    DIRECTIONS = [InvertedVectors.N, InvertedVectors.E, InvertedVectors.S, InvertedVectors.W]
+    DIRECTIONS = [
+        InvertedVectors.N,
+        InvertedVectors.E,
+        InvertedVectors.S,
+        InvertedVectors.W,
+    ]
 
     def __init__(self, text_input):
         self.input: List[str] = text_input
@@ -120,15 +126,15 @@ class Puzzle:
             if grid.value_at_point(point) == Puzzle.END:
                 self.end = point
                 break
-        
-    def find_path(self, grid: Grid):
+
+    def find_path(self, grid: Grid, debug=False):
         frontier = deque()
         frontier.append(
             Node(
-                pos=self.reindeer.pos, 
-                score=self.reindeer.score, 
-                facing=self.reindeer._facing, 
-                trail=[self.reindeer.pos]
+                pos=self.reindeer.pos,
+                score=self.reindeer.score,
+                facing=self.reindeer._facing,
+                trail=[self.reindeer.pos],
             )
         )
         explored = defaultdict(list)
@@ -136,7 +142,7 @@ class Puzzle:
 
         while frontier:
             current_node: Node = frontier.popleft()  # Depth-First search
-            
+
             # Restore the reindeer's state
             self.reindeer.restore_state(current_node)
 
@@ -146,30 +152,32 @@ class Puzzle:
 
             if explored[self.reindeer.pos]:
                 explored[self.reindeer.pos].append(self.reindeer.score)
-            else: 
+            else:
                 explored[self.reindeer.pos] = [self.reindeer.score]
-            pass            
-            
-            # print(f"{self.reindeer.score=}")
-            # self.paint_grid(grid, new_trail)            
-            # print(f"{self.reindeer.pos} = {explored[self.reindeer.pos]=}")
-            
+            pass
+
+            if debug == True:
+                print(f"{self.reindeer.score=}")
+                self.paint_grid(grid, new_trail)
+                print(f"{self.reindeer.pos} = {explored[self.reindeer.pos]=}")
 
             for next in self.reindeer.available_options(grid=grid):
                 for action in next:
                     action()
-                if self.reindeer.pos not in explored or self.reindeer.score <= min(explored[self.reindeer.pos]):
-                    new_trail =  current_node.trail + [self.reindeer.pos]
+                if self.reindeer.pos not in explored or self.reindeer.score <= min(
+                    explored[self.reindeer.pos]
+                ):
+                    new_trail = current_node.trail + [self.reindeer.pos]
                     frontier.append(
                         Node(
-                            pos=self.reindeer.pos, 
-                            score=self.reindeer.score, 
-                            facing=self.reindeer._facing, 
-                            trail=new_trail
+                            pos=self.reindeer.pos,
+                            score=self.reindeer.score,
+                            facing=self.reindeer._facing,
+                            trail=new_trail,
                         )
-                    )                    
+                    )
                 self.reindeer.move_back()
-                
+
         return explored, trails
 
     def paint_grid(self, grid: Grid, points_to_paint: List[Point]):
@@ -179,17 +187,23 @@ class Puzzle:
         for point in points_to_paint:
             grid.set_value_at_point(point, ".")
 
+    def find_distinct_seats(self):
+        seats = [seat for trail in self.best_trails for seat in trail[0]]
+        self.seats = list(set(seats))
+        return len(self.seats)
 
     def solve(self, part):
+        self.find_reindeer(self.grid)
+        self.find_end(self.grid)
+        self.explored, self.trails = self.find_path(self.grid)
+
+        min_value = min(trail[1] for trail in self.trails)
         if part == 1:
-            self.find_reindeer(self.grid)
-            self.find_end(self.grid)
-            self.explored, self.trails = self.find_path(self.grid)
-            
-            return min(trail[1] for trail in self.trails)
-                
+            return min_value
         elif part == 2:
-            pass
+            self.best_trails = [trail for trail in self.trails if trail[1] == min_value]
+            return self.find_distinct_seats()
+
 
 @timing_decorator
 def main(raw, part):
@@ -206,19 +220,21 @@ def run_tests():
     assert main(raw=files["test2"], part=1) == 11048
     assert main(raw=files["test3"], part=1) == 21148
     assert main(raw=files["test4"], part=1) == 1004
+    assert main(raw=files["test"], part=2) == 45
+    assert main(raw=files["test2"], part=2) == 64
 
     # solutions
-    # print(f"\nRunning Solutions:")
-    # assert main(raw=files["input"], part=1) == 1475249
-    # assert main(raw=files["input"], part=2) == 1509724
+    print(f"\nRunning Solutions:")
+    assert main(raw=files["input"], part=1) == 85480
+    assert main(raw=files["input"], part=2) == 518
 
 
 def solve():
     print(f"\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    # answer2 = main(raw=files["input"], part=2)
-    # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+    answer2 = main(raw=files["input"], part=2)
+    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
 if __name__ == "__main__":
