@@ -86,12 +86,42 @@ class Puzzle:
             if self.instruction_pointer >= len(self.program):
                 self.halt = True
 
+    def solve_for_A(self, A):
+        output = []
+        while A:
+            B = A % 8  # 2,4
+            B = B ^ 3  # 1,3
+            C = A // (2**B)  # 7,5
+            B = B ^ C  # 4,7
+            A = (
+                A // 8
+            )  # 0,3  A only changes here and this is reversible with 8 possibilities
+            B = B ^ 5  # 1,5
+            output.append(B % 8)  # 5,5
+        return output
+
+    def test_A_values(self):
+        values_to_try = {0}  # A last value was 0 when we printed the last output
+        for output in self.program[::-1]:
+            next_test = set()
+            for candidate in values_to_try:
+                multiplied_candidate = (
+                    candidate * 8
+                )  # loop through possible numbers who got // 8 and gave the answer
+                for possible_A in range(multiplied_candidate, multiplied_candidate + 8):
+                    result = self.solve_for_A(possible_A)
+                    if result and result[0] == output:  # just need to check the latest
+                        next_test.add(possible_A)
+            values_to_try = next_test
+
+        return min(values_to_try)
+
     def solve(self, part):
         if part == 1:
             self.run_all_instructions()
             return ",".join(self.output)
         elif part == 2:
-            pass
+            return self.test_A_values()
 
 
 @timing_decorator
@@ -104,8 +134,6 @@ def main(raw, part):
 
 def run_tests():
     print(f"\nRunning Tests:")
-    assert main(raw=files["test2"], part=2) == 117440
-
     assert main(raw=files["test"], part=1) == "4,6,3,5,6,3,5,2,1,0"
     assert main(raw=files["small_test1"], part=1) == ""
     assert main(raw=files["small_test2"], part=1) == "0,1,2"
@@ -113,10 +141,12 @@ def run_tests():
     assert main(raw=files["small_test4"], part=1) == ""
     assert main(raw=files["small_test5"], part=1) == ""
 
+    # assert main(raw=files["test2"], part=2) == 117440
+
     # solutions
-    # print(f"\nRunning Solutions:")
-    # assert main(raw=files["input"], part=1) == 1475249
-    # assert main(raw=files["input"], part=2) == 1509724
+    print(f"\nRunning Solutions:")
+    assert main(raw=files["input"], part=1) == "1,3,5,1,7,2,5,1,6"
+    assert main(raw=files["input"], part=2) == 236555997372013
 
 
 def solve():
