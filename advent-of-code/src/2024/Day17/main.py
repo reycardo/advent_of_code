@@ -86,19 +86,20 @@ class Puzzle:
             if self.instruction_pointer >= len(self.program):
                 self.halt = True
 
+    # fmt: off
+    #TODO: make it generalized
     def solve_for_A(self, A):
         output = []
         while A:
-            B = A % 8  # 2,4
-            B = B ^ 3  # 1,3
-            C = A // (2**B)  # 7,5
-            B = B ^ C  # 4,7
-            A = (
-                A // 8
-            )  # 0,3  A only changes here and this is reversible with 8 possibilities
-            B = B ^ 5  # 1,5
-            output.append(B % 8)  # 5,5
+            B = A % 8               # 2,4
+            B = B ^ 3               # 1,3
+            C = A // (2**B)         # 7,5
+            B = B ^ C               # 4,7
+            A = A // 8              # 0,3  A only changes here and this is reversible with 8 possibilities
+            B = B ^ 5               # 1,5
+            output.append(B % 8)    # 5,5
         return output
+    # fmt: on
 
     def test_A_values(self):
         values_to_try = {0}  # A last value was 0 when we printed the last output
