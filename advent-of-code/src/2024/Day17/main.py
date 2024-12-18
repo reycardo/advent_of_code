@@ -36,7 +36,6 @@ class Puzzle:
             7: None,
         }
 
-        self.initial_setup = (self.register_A, self.register_B, self.register_C)
         self.increment = 1
 
     def run(self, opcode, operand):
