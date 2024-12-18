@@ -10,12 +10,6 @@ files = get_txt_files(__file__)
 # Start #
 #########
 
-class Node:
-    def __init__(self, pos: Point, score: int, trail: List[Point]):
-        self.pos = pos
-        self.score = score        
-        self.trail = trail
-
 class Robot:
     def __init__(self, pos: Point):
         self.pos = pos
