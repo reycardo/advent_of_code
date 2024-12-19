@@ -1,35 +1,72 @@
 from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
-from utils.tools import Point, Grid, InvertedVectors
 from typing import List
+from collections import deque
+from functools import lru_cache
 
 files = get_txt_files(__file__)
 #########
 # Start #
 #########
 
-class Towel:
-    def __init__(self, raw):
-        self.stripe = raw
-
-class Pattern:
-    def __init__(self, raw):
-        self.pattern = raw
-
 class Puzzle:
     def __init__(self, text_input):
         self.input: List[str] = text_input
-        self.split_towels_from_patterns()
+        self.split_towels_from_patterns()        
     
     def split_towels_from_patterns(self):
         separator_index = self.input.index("")
-        self.available_towels = [Towel(raw) for raw in self.input[:separator_index]]
-        self.desired_patterns = [Pattern(raw) for raw in self.input[separator_index + 1 :]]
+        self.available_towels = [item for sublist in self.input[:separator_index] for item in sublist.split(', ')]
+        self.desired_patterns = [raw for raw in self.input[separator_index + 1 :]]
+
+    def get_possible_frontiers(self, pattern: str):
+        frontiers = []
+        possible_towels = [towel for towel in self.available_towels if towel in pattern]
+        # initialize all posible frontiers
+        for i in range(1,len(pattern)):
+            for towel in possible_towels:
+                if towel == pattern[:i]:
+                    frontiers.append(deque([[towel]]))
+                    break
+            i += 1
+        return frontiers
+    
+    @lru_cache(None)
+    def get_possible_towel_patterns(self, pattern: str):
+        frontiers: List[deque] = self.get_possible_frontiers(pattern)
+        patterns = []
+        possible_towels = [towel for towel in self.available_towels if towel in pattern]
+        pattern_length = len(pattern)
+        for frontier in frontiers:
+            while frontier:
+                stripe_list = frontier.popleft()
+                stripes = ''.join(stripe_list)
+                
+                if stripes == pattern:
+                    patterns.append(stripe_list)
+                    continue
+                
+                for towel in possible_towels:
+                    new_pattern = stripe_list + [towel]
+                    new_stripes = ''.join(new_pattern)                                        
+                    if new_stripes == pattern[:len(new_stripes)]:
+                        frontier.append(new_pattern)
+                        if len(new_stripes) == pattern_length: # no more possible towels
+                            break
+        return patterns
+    
+    def check_if_next_pattern_fits(self, pattern: str, towel: str):
+
+
 
     def solve(self, part):
         if part == 1:
-            pass
+            self.possible_towel_patterns = {}
+            for pattern in self.desired_patterns:
+                print(pattern)
+                self.possible_towel_patterns[pattern] = self.get_possible_towel_patterns(pattern)                
+            return sum([1 for v in self.possible_towel_patterns.values() if len(v) > 0])
         elif part == 2:            
             pass        
 
