@@ -21,7 +21,7 @@ class Puzzle:
         self.desired_designs = [raw for raw in self.input[separator_index + 1 :]]
     
     @cache
-    def is_possible(self, current_design: str) -> bool:
+    def is_possible(self, current_design: str) -> int:
         """
         Checks if a given design can be built by concatenating one or more 
         patterns from the `available_towels` set.
