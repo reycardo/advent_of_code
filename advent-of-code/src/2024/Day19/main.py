@@ -33,7 +33,7 @@ class Puzzle:
         if current_design == "":
             return 1
         
-        # We need to check if we can contruct a "prefix" of the design from available patterns.
+        # We need to check if we can construct a "prefix" of the design from available patterns.
         # If so, we recurse into the remainder        
         for pattern in self.available_towels:
             if current_design.startswith(pattern):
