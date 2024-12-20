@@ -2,24 +2,147 @@ from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
 from utils.colors import magenta_color, reset_color
 from typing import List
-from utils.tools import Grid, Point
+from utils.tools import Grid, Point, InvertedVectors
+from collections import deque, defaultdict
 
 files = get_txt_files(__file__)
 #########
 # Start #
 #########
 
+class Node:
+    def __init__(self, pos: Point, score: int, trail: List[Point]):
+        self.pos = pos
+        self.score = score
+        self.trail = trail
+
 class Puzzle:
+    SPACE = "."
+    WALL = "#"
+    START = "S"
+    END = "E"
+    DIRECTIONS = [
+        InvertedVectors.N,
+        InvertedVectors.E,
+        InvertedVectors.S,
+        InvertedVectors.W,
+    ]
+
     def __init__(self, text_input, save):
         self.input: List[str] = text_input
         self.save = save
         self.grid: Grid = Grid([list(raw) for raw in self.input])
-        
-    
+        self.find_start_and_end()
+        self.saved_time = {}
+        self.cheats = set()
+
+    def find_start_and_end(self):
+            found_start = False
+            found_end = False
+            for point in self.grid._all_points:
+                if self.grid.value_at_point(point) == Puzzle.START:
+                    self.start = point
+                    found_start = True
+                elif self.grid.value_at_point(point) == Puzzle.END:
+                    self.end = point
+                    found_end = True
+                if found_start and found_end:
+                    break
+
+    def can_move(self, grid: Grid, next_pos: Point):
+        return grid.valid_location(next_pos) and (grid.value_at_point(next_pos) != Puzzle.WALL)
+
+    def find_path(self, grid: Grid):
+        frontier = deque()
+        frontier.append(
+            Node(
+                pos=self.start,
+                score=0,
+                trail=[self.start],
+            )
+        )
+        explored = defaultdict(list)
+        trails = []
+
+        while frontier:
+            current_node: Node = frontier.popleft()  # Breadth-First Search
+
+            if current_node.pos == self.end:
+                trails.append((current_node.trail, current_node.score))
+                continue
+
+            if explored[current_node.pos]:
+                explored[current_node.pos].append(current_node.score)
+            else:
+                explored[current_node.pos] = [current_node.score]
+
+            # Explore neighbors and update distances
+            for next in self.DIRECTIONS:
+                next = next.value
+                neighbour = current_node.pos + Point(next)
+                if self.can_move(grid=grid, next_pos=neighbour):
+                    new_score = current_node.score + 1
+
+                    if neighbour not in explored or new_score <= min(
+                        explored[current_node.pos]
+                    ):
+                        new_trail = current_node.trail + [neighbour]
+                        frontier.append(
+                            Node(
+                                pos=neighbour,
+                                score=new_score,
+                                trail=new_trail,
+                            )
+                        )
+
+        return explored, trails
+
+    def find_cheats(self, point: Point, score_at_point: int):        
+        for direction in Puzzle.DIRECTIONS:
+            next_point_1 = point + Point(direction.value)
+            next_point_2 = next_point_1 + Point(direction.value)
+            if (
+                self.grid.valid_location(next_point_1) and 
+                self.grid.valid_location(next_point_2) and 
+                self.grid.value_at_point(next_point_1) == Puzzle.WALL and 
+                (self.grid.value_at_point(next_point_2) == Puzzle.SPACE or self.grid.value_at_point(next_point_2) == Puzzle.END)
+            ):
+                if next_point_1 in self.cheats:
+                    continue
+                self.cheats.add(next_point_1)
+                print(f"Found cheat at {next_point_1}")
+                score_at_point
+                original_score = self.original_trail[0][0].index(next_point_2)
+                new_score = score_at_point + 1 + (len(self.original_trail[0][0] ) - 1 - original_score)
+                time_diff = self.trail_time - new_score
+                if new_score  < self.trail_time:
+                    new_trail = self.original_trail[0][0][:score_at_point] + [next_point_1] + self.original_trail[0][0][original_score:]
+                    if time_diff not in self.saved_time:
+                        self.saved_time[time_diff] = (1, [new_trail])
+                    else:
+                        count, trails = self.saved_time[time_diff]
+                        self.saved_time[time_diff] = (count + 1, trails + [new_trail])
+                self.grid.set_value_at_point(next_point_1, Puzzle.WALL)
+
+
+
+    def cheat(self, trail: List[Point]):
+        for score, point in enumerate(trail, start=1):
+            self.find_cheats(point, score_at_point=score)
+
+    def paint_grid(self, grid: Grid, points_to_paint: List[Point]):
+        for point in points_to_paint:
+            grid.set_value_at_point(point, "o")
+        print(grid)
+        for point in points_to_paint:
+            grid.set_value_at_point(point, ".")
 
     def solve(self, part):
         if part == 1:
-            pass
+            _, self.original_trail = self.find_path(self.grid)
+            self.trail_time = min(self.original_trail, key=lambda x: x[1])[1]
+            self.cheat(self.original_trail[0][0])            
+            return sum([count[0] for saved_time, count in self.saved_time.items() if saved_time >= self.save])
         elif part == 2:
             pass
 
