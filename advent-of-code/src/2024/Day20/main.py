@@ -109,8 +109,7 @@ class Puzzle:
             ):
                 if next_point_1 in self.cheats:
                     continue
-                self.cheats.add(next_point_1)
-                print(f"Found cheat at {next_point_1}")
+                self.cheats.add(next_point_1)                
                 score_at_point
                 original_score = self.original_trail[0][0].index(next_point_2)
                 new_score = score_at_point + 1 + (len(self.original_trail[0][0] ) - 1 - original_score)
