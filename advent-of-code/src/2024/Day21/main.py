@@ -13,11 +13,6 @@ files = get_txt_files(__file__)
 #########
 
 
-class Robot:
-    def __init__(self, pos):
-        self.pos = pos
-
-
 class Node:
     def __init__(self, pos: Point, score: int, trail: List[Point]):
         self.pos = pos
