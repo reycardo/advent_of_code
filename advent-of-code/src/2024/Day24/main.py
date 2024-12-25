@@ -9,11 +9,12 @@ files = get_txt_files(__file__)
 # Start #
 #########
 
+
 class Wire:
-    def __init__(self, raw: str):                
-        self.raw = raw
+    def __init__(self, raw: str):
         self.name, val = raw.split(":")
         self.val = int(val.strip())
+
 
 class Gate:
     OPERATORS = {
@@ -22,16 +23,23 @@ class Gate:
         "OR": operator.or_,
     }
 
-    def __init__(self, raw: str):        
+    def __init__(self, raw: str):
         self.raw = raw
         parts = self.raw.split()
         self.inputs = (parts[0], parts[2])
         self.output = parts[-1]
         self.operation = self.OPERATORS.get(parts[1])
+        self.solved = False
 
-    def solve(self, wires: Dict[str, int]):
-        wires[self.output] = self.operation(wires[self.inputs[0]],wires[self.inputs[1]])
+    def solve(self, wires: Dict[str, Wire]) -> Dict[str, Wire]:
+        if self.inputs[0] in wires and self.inputs[1] in wires:
+            result = self.operation(
+                wires[self.inputs[0]].val, wires[self.inputs[1]].val
+            )
+            wires[self.output] = Wire(f"{self.output}: {result}")
+            self.solved = True
         return wires
+
 
 class Puzzle:
     def __init__(self, text_input):
@@ -39,13 +47,36 @@ class Puzzle:
         self.split_wires_from_gates()
 
     def split_wires_from_gates(self):
-        separator_index = self.input.index("")        
-        self.wires = {wire.name: wire.val for wire in (Wire(raw) for raw in self.input[:separator_index])}
+        separator_index = self.input.index("")
+        self.wires: Dict[str, Wire] = {
+            wire.name: wire
+            for wire in (Wire(raw) for raw in self.input[:separator_index])
+        }
         self.gates = [Gate(raw) for raw in self.input[separator_index + 1 :]]
+
+    def convert_binary_to_decimal(self, binary: str) -> int:
+        return int(binary, 2)
+
+    def get_solution(self):
+        sorted_zs = sorted(
+            [
+                (wire.name, wire.val)
+                for wire in self.wires.values()
+                if wire.name.startswith("z")
+            ],
+            reverse=True,
+        )
+        return self.convert_binary_to_decimal(
+            "".join(list(map(str, [t[1] for t in sorted_zs])))
+        )
 
     def solve(self, part):
         if part == 1:
-            pass
+            # solve all gates until all are solved
+            while not all(gate.solved for gate in self.gates):
+                for gate in self.gates:
+                    self.wires = gate.solve(self.wires)
+            return self.get_solution()
         elif part == 2:
             pass
 
@@ -61,7 +92,7 @@ def main(raw, part):
 def run_tests():
     print(f"\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 4
-    assert main(raw=files["test2"], part=1) == 2024    
+    assert main(raw=files["test2"], part=1) == 2024
 
     # solutions
     # print(f"\nRunning Solutions:")
