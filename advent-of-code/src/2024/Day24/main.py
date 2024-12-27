@@ -94,17 +94,14 @@ class Puzzle:
                 if wire.name.startswith("y")
             ],
             reverse=True,
-        )            
-        z = self.convert_binary_to_decimal(
-            "".join(list(map(str, [t[1] for t in sorted_zs])))
         )
-        x = self.convert_binary_to_decimal(
-            "".join(list(map(str, [t[1] for t in sorted_xs])))
-        )
-        y = self.convert_binary_to_decimal(
-            "".join(list(map(str, [t[1] for t in sorted_ys])))
-        )
-        return x+y==z
+        z = "".join(list(map(str, [t[1] for t in sorted_zs])))
+
+        x = "".join(list(map(str, [t[1] for t in sorted_xs])))
+
+        y = "".join(list(map(str, [t[1] for t in sorted_ys])))
+        bin_sum = bin(int(x, 2) + int(y, 2))[2:]
+        return x, y, z, bin_sum
 
     # TODO: check what bits are wrong, swap only the wires that appear on the list that reach to those bits?
 
@@ -119,10 +116,9 @@ class Puzzle:
             while not all(gate.solved for gate in self.gates):
                 for gate in self.gates:
                     self.wires = gate.solve(self.wires)
-            if self.get_solution_pt2():
-                print("solved")
+            cenas = self.get_solution_pt2()
             pass
-            return 
+            return
 
 
 @timing_decorator
