@@ -70,6 +70,44 @@ class Puzzle:
             "".join(list(map(str, [t[1] for t in sorted_zs])))
         )
 
+    def get_solution_pt2(self):
+        sorted_zs = sorted(
+            [
+                (wire.name, wire.val)
+                for wire in self.wires.values()
+                if wire.name.startswith("z")
+            ],
+            reverse=True,
+        )
+        sorted_xs = sorted(
+            [
+                (wire.name, wire.val)
+                for wire in self.wires.values()
+                if wire.name.startswith("x")
+            ],
+            reverse=True,
+        )
+        sorted_ys = sorted(
+            [
+                (wire.name, wire.val)
+                for wire in self.wires.values()
+                if wire.name.startswith("y")
+            ],
+            reverse=True,
+        )            
+        z = self.convert_binary_to_decimal(
+            "".join(list(map(str, [t[1] for t in sorted_zs])))
+        )
+        x = self.convert_binary_to_decimal(
+            "".join(list(map(str, [t[1] for t in sorted_xs])))
+        )
+        y = self.convert_binary_to_decimal(
+            "".join(list(map(str, [t[1] for t in sorted_ys])))
+        )
+        return x+y==z
+
+    # TODO: check what bits are wrong, swap only the wires that appear on the list that reach to those bits?
+
     def solve(self, part):
         if part == 1:
             # solve all gates until all are solved
@@ -78,7 +116,13 @@ class Puzzle:
                     self.wires = gate.solve(self.wires)
             return self.get_solution()
         elif part == 2:
+            while not all(gate.solved for gate in self.gates):
+                for gate in self.gates:
+                    self.wires = gate.solve(self.wires)
+            if self.get_solution_pt2():
+                print("solved")
             pass
+            return 
 
 
 @timing_decorator
@@ -93,10 +137,11 @@ def run_tests():
     print(f"\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 4
     assert main(raw=files["test2"], part=1) == 2024
+    assert main(raw=files["test3"], part=2) == 2024
 
     # solutions
-    # print(f"\nRunning Solutions:")
-    # assert main(raw=files["input"], part=1) == 1476
+    print(f"\nRunning Solutions:")
+    assert main(raw=files["input"], part=1) == 53258032898766
     # assert main(raw=files["input"], part=2) == 662726441391898
 
 
@@ -104,8 +149,8 @@ def solve():
     print(f"\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    # answer2 = main(raw=files["input"], part=2)
-    # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+    answer2 = main(raw=files["input"], part=2)
+    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
 if __name__ == "__main__":
