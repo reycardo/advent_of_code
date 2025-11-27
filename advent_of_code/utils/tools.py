@@ -3,7 +3,7 @@ import os
 import time
 from typing import Any, Callable, Union, Tuple
 from datetime import timedelta
-from utils.colors import green_color, cyan_color, reset_color
+from advent_of_code.utils.colors import green_color, cyan_color, reset_color
 from itertools import product
 from enum import Enum
 from dataclasses import asdict, dataclass

@@ -1,5 +1,5 @@
 from utils.tools import get_txt_files, read_input, timing_decorator, get_adjacents
-from utils.colors import magenta_color, reset_color
+from advent_of_code.utils.colors import magenta_color, reset_color
 import networkx as nx
 from typing import List
 

@@ -1,5 +1,5 @@
 from utils.tools import get_txt_files, read_input, timing_decorator
-from utils.colors import magenta_color, reset_color
+from advent_of_code.utils.colors import magenta_color, reset_color
 from utils.tools import Grid, Point
 from typing import Dict, List, Tuple
 from utils.tools import flatten

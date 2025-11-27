@@ -1,6 +1,6 @@
 from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
-from utils.colors import magenta_color, reset_color
+from advent_of_code.utils.colors import magenta_color, reset_color
 from typing import List, Tuple
 import networkx as nx
 import numpy as np
