@@ -25,13 +25,13 @@
 
 ### Mac
 
-### Prerequisites
+#### Prerequisites
 
 - Homebrew must be installed: [Install Homebrew](https://brew.sh/)
 - UV must be installed:  
   Run `brew install uv` to install uv
 
-### UV
+#### UV
 
 1. Run `uv venv` to create a venv called .venv
 1. Run `source .venv/bin/activate` to activate the new .venv
