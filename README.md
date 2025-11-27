@@ -29,7 +29,7 @@
 
 1. Run `uv venv` to create a venv called .venv
 1. Run `source .venv/bin/activate` to activate the new .venv
-1. Run `uv sync` to install all dependencies via uv
+1. Run `uv pip install -e .` to install all dependencies via uv
 1. Run `uv run pre-commit install` to install pre-commits locally
 
 
@@ -38,8 +38,20 @@ And now you are ready to use this repo
 
 ## Usage
 
-1. Make sure your venv is activated:
-`source .venv/bin/activate`
-1. Run from root(advent_of_code):
-   Example running Day1 of 2023
-`uv run python advent-of-code\src\2023\Day1\main.py`
+1. Activate your virtual environment:
+  ```sh
+  source .venv/bin/activate
+  ```
+
+2. Run code from the project root:
+  ```sh
+  uv run python advent_of_code/src/2024/Day1/main.py
+  ```
+
+3. Run code from a specific day directory:
+  ```sh
+  cd advent_of_code/src/2024/Day1
+  uv run python main.py
+  ```
+
+4. Debug directly in VS Code or your IDE by opening `main.py` and using the debugger.
