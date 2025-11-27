@@ -19,7 +19,7 @@
 
 ## Quick start (Mac)
 
-## Prerequisites
+### Prerequisites
 
 - Homebrew must be installed: [Install Homebrew](https://brew.sh/)
 - UV must be installed:  
@@ -43,15 +43,26 @@ And now you are ready to use this repo
   source .venv/bin/activate
   ```
 
-2. Run code from the project root:
+You can run your code in several ways:
+
+- **From the project root:**
   ```sh
   uv run python advent_of_code/src/2024/Day1/main.py
   ```
 
-3. Run code from a specific day directory:
+- **From a specific day directory:**
   ```sh
   cd advent_of_code/src/2024/Day1
   uv run python main.py
   ```
 
-4. Debug directly in VS Code or your IDE by opening `main.py` and using the debugger.
+- **Debug directly in VS Code or your IDE:**
+  Open `main.py` and use the debugger.
+
+## Custom Badges
+
+To display your own Advent of Code badges:
+
+1. Open `.github/workflows/badges.yml` in this repository.
+2. Find and use your own user ID for badge generation.
+3. For more details, see the [aoc-badges-action documentation](https://github.com/J0B10/aoc-badges-action).
