@@ -1,7 +1,7 @@
 from __future__ import annotations
-from utils.tools import get_txt_files, read_input, timing_decorator
+from advent_of_code.utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
-from utils.tools import Point, Grid, InvertedVectors
+from advent_of_code.utils.tools import Point, Grid, InvertedVectors
 from typing import List
 from collections import deque, defaultdict
 

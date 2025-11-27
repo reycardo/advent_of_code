@@ -1,7 +1,7 @@
-from utils.tools import get_txt_files, read_input, timing_decorator
+from advent_of_code.utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
 from typing import List
-from utils.tools import Grid, Point, Vectors
+from advent_of_code.utils.tools import Grid, Point, Vectors
 from collections import deque
 
 files = get_txt_files(__file__)

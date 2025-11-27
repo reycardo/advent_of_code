@@ -1,6 +1,6 @@
-from utils.tools import get_txt_files, read_input, timing_decorator
+from advent_of_code.utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
-from utils.tools import Point, Grid
+from advent_of_code.utils.tools import Point, Grid
 from typing import Tuple, List
 import re
 from functools import reduce
