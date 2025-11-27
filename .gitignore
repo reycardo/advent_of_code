@@ -134,4 +134,7 @@ Temporary Items
 *.diff
 
 # virtual environment
-/venv/
+.venv/
+
+# Egg metadata
+*.egg-info/
