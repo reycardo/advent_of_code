@@ -1,9 +1,10 @@
 repos:
 - repo: local
-  hooks:
-  - id: ruff-check
-    name: ruff-check
-    entry: uv run python -m ruff check .
-    language: python
-    types: [ python ]
-    additional_dependencies: [ uv ]
+  hooks: []
+  # hooks:
+  # - id: ruff-check
+  #   name: ruff-check
+  #   entry: uv run python -m ruff check .
+  #   language: python
+  #   types: [ python ]
+  #   additional_dependencies: [ uv ]

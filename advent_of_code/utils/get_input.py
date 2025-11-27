@@ -6,7 +6,7 @@ import os
 def download_aoc_input(day, year):
     # Create the output directory if it doesn't exist
     output_dir = os.path.join(
-        os.getcwd(), "advent-of-code", "src", str(year), f"Day{day}"
+        os.getcwd(), "advent_of_code", "src", str(year), f"Day{day}"
     )
     os.makedirs(output_dir, exist_ok=True)
 
