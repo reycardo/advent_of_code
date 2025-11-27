@@ -30,6 +30,8 @@
 1. Run `uv venv` to create a venv called .venv
 1. Run `source .venv/bin/activate` to activate the new .venv
 1. Run `uv sync` to install all dependencies via uv
+1. Run `uv run pre-commit install` to install pre-commits locally
+
 
 
 And now you are ready to use this repo
