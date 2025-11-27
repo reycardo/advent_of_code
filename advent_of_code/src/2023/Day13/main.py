@@ -14,8 +14,8 @@ class Pattern:
         self.value1 = self.check_mirror(difference_threshold=0)
         self.value2 = self.check_mirror(difference_threshold=1)
 
-    def count_differences(self, l, r):
-        return sum(a != b for a, b in zip(l, r))
+    def count_differences(self, left, right):
+        return sum(a != b for a, b in zip(left, right))
 
     def check_mirror(self, difference_threshold=0):
         for X in range(1, len(self.pattern)):  # horizontal
@@ -39,7 +39,6 @@ class Puzzle:
     def __init__(self, text_input):
         self.input = text_input
         self.patterns = self.parse_input()
-        a = 1
 
     def parse_input(self):
         d = [Pattern(list(sub[1])) for sub in groupby(self.input, key=bool) if sub[0]]
@@ -61,18 +60,18 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 405
     assert main(raw=files["test"], part=2) == 400
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 34202
     assert main(raw=files["input"], part=2) == 34230
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

@@ -2,7 +2,7 @@ from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
 from utils.tools import Grid, Point, Vectors
-from typing import List, Dict, Set, Tuple
+from typing import Dict, Set, Tuple
 from collections import deque
 from dataclasses import dataclass
 
@@ -158,7 +158,7 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 140
     assert main(raw=files["test2"], part=1) == 772
     assert main(raw=files["test3"], part=1) == 1930
@@ -174,13 +174,13 @@ def run_tests():
     assert main(raw=files["test3"], part=2) == 1206
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 1464678
     assert main(raw=files["input"], part=2) == 877492
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

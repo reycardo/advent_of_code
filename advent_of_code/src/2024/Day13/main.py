@@ -105,20 +105,20 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 480
     assert (
         main(raw=files["test"], part=2) == 459236326669 + 416082282239
     )  # calculated before # 2nd and 4th claw machines are the only ones with valid solutions
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 31623
     assert main(raw=files["input"], part=2) == 93209116744825
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

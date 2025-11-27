@@ -8,25 +8,26 @@ files = get_txt_files(__file__)
 # Start #
 #########
 
+
 class Rule:
     def __init__(self, raw):
         self.parse_raw(raw)
-
 
     def parse_raw(self, raw):
         self.order = raw.split("|")
         self.lower = int(self.order[0])
         self.upper = int(self.order[1])
 
+
 class Update:
     def __init__(self, raw):
-        self.parse_raw(raw)        
+        self.parse_raw(raw)
 
     def get_midle(self):
-        return self.pages[int((len(self.pages) - 1)/2)]
+        return self.pages[int((len(self.pages) - 1) / 2)]
 
     def parse_raw(self, raw):
-        self.pages = list(map(int,raw.split(",")))
+        self.pages = list(map(int, raw.split(",")))
 
 
 class Puzzle:
@@ -45,21 +46,21 @@ class Puzzle:
     def setup_page_boundaries(self):
         self.page_uppers = defaultdict(list)
         self.page_lowers = defaultdict(list)
-        
+
         for rule in self.rules:
             self.page_uppers[rule.lower].append(rule.upper)
             self.page_lowers[rule.upper].append(rule.lower)
-            
+
     def validate_update(self, update: Update):
         for page in update.pages:
-            pages_to_the_right = update.pages[update.pages.index(page) + 1:]
-            pages_to_the_left = update.pages[:update.pages.index(page)]
+            pages_to_the_right = update.pages[update.pages.index(page) + 1 :]
+            pages_to_the_left = update.pages[: update.pages.index(page)]
 
             # check if there is a page to the right that should be to the left
             for right_page in pages_to_the_right:
                 if right_page in self.page_lowers[page]:
                     return False
-            
+
             # check if there is a page to the left that should be to the right
             for left_page in pages_to_the_left:
                 if left_page in self.page_uppers[page]:
@@ -68,8 +69,8 @@ class Puzzle:
 
     def order_invalid_update(self, update: Update):
         for page in update.pages:
-            pages_to_the_right = update.pages[update.pages.index(page) + 1:]
-            pages_to_the_left = update.pages[:update.pages.index(page)]
+            pages_to_the_right = update.pages[update.pages.index(page) + 1 :]
+            pages_to_the_left = update.pages[: update.pages.index(page)]
 
             # check if there is a page to the right that should be to the left
             for right_page in pages_to_the_right:
@@ -78,7 +79,7 @@ class Puzzle:
                     update.pages[update.pages.index(right_page)] = page
                     update.pages[update.pages.index(page)] = right_page
                     update = self.order_invalid_update(update)
-            
+
             # check if there is a page to the left that should be to the right
             for left_page in pages_to_the_left:
                 if left_page in self.page_uppers[page]:
@@ -95,16 +96,18 @@ class Puzzle:
             else:
                 self.invalids.append(update)
 
-
-    def solve(self, part):                
+    def solve(self, part):
         self.validate_updates()
-        if part == 1:            
+        if part == 1:
             self.middles = [update.get_midle() for update in self.valids]
         elif part == 2:
-            self.ordered_invalids = [self.order_invalid_update(update) for update in self.updates if update not in self.valids]
+            self.ordered_invalids = [
+                self.order_invalid_update(update)
+                for update in self.updates
+                if update not in self.valids
+            ]
             self.middles = [update.get_midle() for update in self.ordered_invalids]
         return sum(self.middles)
-            
 
 
 @timing_decorator
@@ -116,18 +119,18 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 143
     assert main(raw=files["test"], part=2) == 123
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 7365
     assert main(raw=files["input"], part=2) == 5770
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

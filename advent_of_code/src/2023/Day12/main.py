@@ -18,7 +18,6 @@ class Puzzle:
     def __init__(self, text_input):
         self.input = text_input
         self.input_parsed = [Record(row) for row in self.input]
-        a = 1
 
     def solve(self, part):
         if part == 1:
@@ -36,18 +35,18 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 21
     # assert main(raw=files["test"], part=2) == 71503
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     # assert main(raw=files["input"], part=1) == 503424
     # assert main(raw=files["input"], part=2) == 32607562
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     # answer2 = main(raw=files["input"], part=2)

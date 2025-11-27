@@ -194,18 +194,18 @@ def main(raw, part, num_robots):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1, num_robots=3) == 126384
     # assert main(raw=files["test"], part=2) == 20
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1, num_robots=3) == 134120
     # assert main(raw=files["input"], part=2) == 662726441391898
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1, num_robots=3)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2, num_robots=26)

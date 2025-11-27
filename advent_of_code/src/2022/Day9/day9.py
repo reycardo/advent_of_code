@@ -1,21 +1,20 @@
 import sys
-sys.path.insert(0, './')
+
+sys.path.insert(0, "./")
 from utils import tools
 import os
 
-__location__ = os.path.realpath(os.path.join(
-    os.getcwd(), os.path.dirname(__file__)))
-input_raw = os.path.join(__location__, 'input.txt')
-test_raw = os.path.join(__location__, 'test.txt')
-test_raw_2 = os.path.join(__location__, 'test2.txt')
+__location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
+input_raw = os.path.join(__location__, "input.txt")
+test_raw = os.path.join(__location__, "test.txt")
+test_raw_2 = os.path.join(__location__, "test2.txt")
 
 #########
 # Start #
 #########
 
 
-class Rope_Motion():
-
+class Rope_Motion:
     def __init__(self, input: list[str], part: int):
         self.input = input
         self.parsed = self.parse_input()
@@ -34,12 +33,12 @@ class Rope_Motion():
     def create_middle_knots(self):
         self.middles = [Rope_Tail(self.head)]
         for _ in range(7):
-            self.middles.append(Rope_Tail(self.middles[-1]))                
+            self.middles.append(Rope_Tail(self.middles[-1]))
 
     def parse_input(self):
         parsed = []
         for order in self.input:
-            splited = order.split(' ')
+            splited = order.split(" ")
             parsed.append([splited[0], int(splited[1])])
         return parsed
 
@@ -52,8 +51,7 @@ class Rope_Motion():
                 self.tail.move()
 
 
-class Rope_Knot():
-
+class Rope_Knot:
     def __init__(self):
         self.start = (0, 0)
         self.occupied = [self.start]
@@ -61,31 +59,28 @@ class Rope_Knot():
 
 
 class Rope_Head(Rope_Knot):
-
     def __init__(self):
         super().__init__()
 
     def move(self, command):
         self.occupied.append(self.pos)
-        if command == 'L':
+        if command == "L":
             self.pos = self.pos[0] - 1, self.pos[1]
-        elif command == 'R':
+        elif command == "R":
             self.pos = self.pos[0] + 1, self.pos[1]
-        elif command == 'U':
+        elif command == "U":
             self.pos = self.pos[0], self.pos[1] + 1
-        elif command == 'D':
+        elif command == "D":
             self.pos = self.pos[0], self.pos[1] - 1
 
 
 class Rope_Tail(Rope_Knot):
-
     def __init__(self, head: Rope_Head):
         super().__init__()
         self.head = head
 
     def get_vector(self):
-        distance = [self.head.pos[0] - self.pos[0],
-                    self.head.pos[1] - self.pos[1]]
+        distance = [self.head.pos[0] - self.pos[0], self.head.pos[1] - self.pos[1]]
         return [distance[0], distance[1]]
 
     def move(self):
@@ -131,7 +126,7 @@ def run_tests():
     assert main(input_raw, 2) == 2602
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     run_tests()
     answer1 = main(input_raw, 1)
     answer2 = main(input_raw, 2)

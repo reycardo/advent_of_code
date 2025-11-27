@@ -16,9 +16,7 @@ class Puzzle:
         self.input_parsed: List[int] = list(map(int, self.input))
 
     def calc_secret_number_1(self, secret_number: int) -> int:
-        return self.prune_number(
-            self.mix_number(secret_number * (2**6), secret_number)
-        )
+        return self.prune_number(self.mix_number(secret_number * (2**6), secret_number))
 
     def calc_secret_number_2(self, secret_number: int) -> int:
         return self.prune_number(
@@ -103,18 +101,18 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 37327623
     assert main(raw=files["test2"], part=2) == 23
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 16619522798
     # assert main(raw=files["input"], part=2) == 662726441391898
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

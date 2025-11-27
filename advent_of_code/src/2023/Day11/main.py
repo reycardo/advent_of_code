@@ -141,19 +141,19 @@ def main(raw, part, weight=1):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 374
     assert main(raw=files["test"], part=2, weight=10) == 1030
     assert main(raw=files["test"], part=2, weight=100) == 8410
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 9274989
     assert main(raw=files["input"], part=2, weight=1000000) == 357134560737
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2, weight=1000000)

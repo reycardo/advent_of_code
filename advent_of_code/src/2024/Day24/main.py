@@ -1,7 +1,7 @@
 from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
-from typing import List, Tuple, Dict
+from typing import List, Dict
 import operator
 
 files = get_txt_files(__file__)
@@ -116,7 +116,7 @@ class Puzzle:
             while not all(gate.solved for gate in self.gates):
                 for gate in self.gates:
                     self.wires = gate.solve(self.wires)
-            cenas = self.get_solution_pt2()
+            self.get_solution_pt2()
             pass
             return
 
@@ -130,19 +130,19 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 4
     assert main(raw=files["test2"], part=1) == 2024
     assert main(raw=files["test3"], part=2) == 2024
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 53258032898766
     # assert main(raw=files["input"], part=2) == 662726441391898
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

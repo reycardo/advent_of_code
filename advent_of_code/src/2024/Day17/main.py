@@ -133,7 +133,7 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == "4,6,3,5,6,3,5,2,1,0"
     assert main(raw=files["small_test1"], part=1) == ""
     assert main(raw=files["small_test2"], part=1) == "0,1,2"
@@ -144,13 +144,13 @@ def run_tests():
     # assert main(raw=files["test2"], part=2) == 117440
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == "1,3,5,1,7,2,5,1,6"
     assert main(raw=files["input"], part=2) == 236555997372013
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

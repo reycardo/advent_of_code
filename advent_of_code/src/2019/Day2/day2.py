@@ -1,4 +1,4 @@
-from utils.tools import get_txt_files, read_input, timing_decorator, flatten
+from utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
 from typing import List
 import copy
@@ -119,7 +119,7 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(files["test1_1"], 0) == 3500
     assert main(files["test1_2"], 0) == 2
     assert main(files["test1_3"], 0) == 2
@@ -132,7 +132,7 @@ def run_tests():
 
 
 def run_solution():
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     answer1 = main(files["input"], 1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(files["input"], 2)

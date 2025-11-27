@@ -50,7 +50,7 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(test_raw, 1) == 24000
     assert main(test_raw, 2) == 45000
     # solutions
@@ -59,7 +59,7 @@ def run_tests():
 
 
 def run_solution():
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     answer1 = main(input_raw, 1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(input_raw, 2)

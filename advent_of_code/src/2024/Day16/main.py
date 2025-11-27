@@ -156,7 +156,7 @@ class Puzzle:
                 explored[self.reindeer.pos] = [self.reindeer.score]
             pass
 
-            if debug == True:
+            if debug:
                 print(f"{self.reindeer.score=}")
                 self.paint_grid(grid, current_node.trail)
                 print(f"{self.reindeer.pos} = {explored[self.reindeer.pos]=}")
@@ -214,7 +214,7 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 7036
     assert main(raw=files["test2"], part=1) == 11048
     assert main(raw=files["test3"], part=1) == 21148
@@ -224,13 +224,13 @@ def run_tests():
     assert main(raw=files["test2"], part=2) == 64
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 85480
     assert main(raw=files["input"], part=2) == 518
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

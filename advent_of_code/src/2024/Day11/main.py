@@ -1,7 +1,7 @@
 from __future__ import annotations
 from utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
-from typing import List, Dict
+from typing import Dict
 
 files = get_txt_files(__file__)
 #########
@@ -65,20 +65,20 @@ def main(raw, part, blinks):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1, blinks=6) == 22
     assert main(raw=files["test"], part=1, blinks=25) == 55312
     assert main(raw=files["test"], part=2, blinks=25) == 55312
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1, blinks=25) == 188902
     assert main(raw=files["input"], part=2, blinks=25) == 188902
     assert main(raw=files["input"], part=2, blinks=75) == 223894720281135
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1, blinks=25)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2, blinks=75)

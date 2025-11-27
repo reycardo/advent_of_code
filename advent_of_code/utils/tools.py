@@ -88,7 +88,7 @@ def timing_decorator(func: Callable[..., Any]) -> Callable[..., Any]:
             kwargs["raw"] = os.path.basename(raw_value)
 
         # Get the parameter names and values
-        param_names = func.__code__.co_varnames[: func.__code__.co_argcount]
+        # param_names = func.__code__.co_varnames[: func.__code__.co_argcount]
         param_values = args + tuple(f"{key}={value}" for key, value in kwargs.items())
 
         # Print the function name, elapsed time, and parameter values
@@ -141,20 +141,16 @@ class Point:
 
     def __init__(self, x: Union[int, Tuple[int, int]], y: int = None):
         if isinstance(x, tuple):
-            object.__setattr__(self, 'x', x[0])
-            object.__setattr__(self, 'y', x[1])
+            object.__setattr__(self, "x", x[0])
+            object.__setattr__(self, "y", x[1])
         else:
-            object.__setattr__(self, 'x', x)
-            object.__setattr__(self, 'y', y)
+            object.__setattr__(self, "x", x)
+            object.__setattr__(self, "y", y)
 
     def __add__(self, other: Point):
         return Point(self.x + other.x, self.y + other.y)
 
-    def __mul__(self, other: Point):
-        """(x, y) * (a, b) = (xa, yb)"""
-        return Point(self.x * other.x, self.y * other.y)
-
-    def __mul__(self, other: Union['Point', int]):
+    def __mul__(self, other: Union["Point", int]):
         """Multiply by another Point or a scalar
         (x, y) * (a, b) = (xa, yb)
         or
@@ -244,6 +240,7 @@ class Vectors(Enum):
         x, y = self.value
         return (x, -y)
 
+
 class InvertedVectors(Enum):
     """Enumeration of 8 directions.
     Note: y axis increments in the South direction, i.e. N = (0, -1)"""
@@ -262,6 +259,7 @@ class InvertedVectors(Enum):
         """Return vector, but with y-axis inverted. I.e. N = (0, 1)"""
         x, y = self.value
         return (x, -y)
+
 
 class VectorDicts:
     """Contains constants for Vectors"""

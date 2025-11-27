@@ -6,6 +6,7 @@ files = get_txt_files(__file__)
 # Start #
 #########
 
+
 class Puzzle:
     def __init__(self, text_input):
         self.input = text_input
@@ -22,12 +23,15 @@ class Puzzle:
             left.append(int(parts[0]))
             right.append(int(parts[1]))
         return left, right
-    
-    def order_lists(self):        
+
+    def order_lists(self):
         return sorted(self.left), sorted(self.right)
 
     def calculate_difs(self):
-        return [abs(left - right) for left, right in zip(self.ordered_left, self.ordered_right)]
+        return [
+            abs(left - right)
+            for left, right in zip(self.ordered_left, self.ordered_right)
+        ]
 
     def sum_difs(self):
         return sum(self.difs)
@@ -37,7 +41,6 @@ class Puzzle:
         for left_element in self.ordered_left:
             similarity += self.ordered_right.count(left_element) * left_element
         return similarity
-
 
     def solve(self, part):
         if part == 1:
@@ -56,18 +59,18 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(raw=files["test"], part=1) == 11
     assert main(raw=files["test"], part=2) == 31
 
     # solutions
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     assert main(raw=files["input"], part=1) == 1319616
     assert main(raw=files["input"], part=2) == 27267728
 
 
 def solve():
-    print(f"\nSolving:")
+    print("\nSolving:")
     answer1 = main(raw=files["input"], part=1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(raw=files["input"], part=2)

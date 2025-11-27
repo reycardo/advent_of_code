@@ -41,7 +41,7 @@ def main(raw, part):
 
 
 def run_tests():
-    print(f"\nRunning Tests:")
+    print("\nRunning Tests:")
     assert main(files["test1_1"], 1) == 654
     assert main(files["test1_2"], 1) == 33583
     assert main(files["test2_1"], 2) == 2
@@ -54,7 +54,7 @@ def run_tests():
 
 
 def run_solution():
-    print(f"\nRunning Solutions:")
+    print("\nRunning Solutions:")
     answer1 = main(files["input"], 1)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
     answer2 = main(files["input"], 2)
