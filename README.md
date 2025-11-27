@@ -17,7 +17,13 @@
 ![](https://img.shields.io/badge/2024_stars%20⭐-45-yellow)
 ![](https://img.shields.io/badge/2024_days%20completed-22-red)
 
-## Quick start (Mac)
+## Quick Start
+
+### Windows
+
+*Setup instructions coming soon.*
+
+### Mac
 
 ### Prerequisites
 
