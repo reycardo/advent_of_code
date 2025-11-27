@@ -1,27 +1,20 @@
-[tool.poetry]
+[project]
 name = "advent-of-code"
-version = "0.0.1"
+version = "2.0.0"
 description = "Advent of Code repo"
-authors = ["reycardo <reycardo_95@hotmail.com>"]
+authors = [
+    {name = "reycardo", email = "reycardo_95@hotmail.com"}
+]
 readme = "README.md"
-packages = [
-    {include = "advent-of-code"},
-    {include = "utils", from = "advent-of-code"}
+requires-python = ">=3.12"
+
+dependencies = [
+    "aocd>=0.1",
+    "matplotlib>=3.10.7",
+    "networkx>=3.6",
+    "pre-commit>=4.5.0",
+    "ruff>=0.14.6",
 ]
 
-
-[tool.poetry.dependencies]
-python = "^3.12"
-aocd = "^0.1"
-browser-cookie3 = "^0.19.1"
-black = "^23.11.0"
-pre-commit = "^3.5.0"
-networkx = "^3.2.1"
-matplotlib = "^3.9.3"
-
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
-
-[tool.poetry.scripts]
-get_input = 'utils.get_input:main'
+[tool.setuptools]
+packages = ["advent-of-code", "utils"]
