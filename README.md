@@ -14,11 +14,11 @@
 ![](https://img.shields.io/badge/2023_stars%20⭐-33-yellow)
 ![](https://img.shields.io/badge/2023_days%20completed-15-red)
 
-![](https://img.shields.io/badge/2024_stars%20⭐-45-yellow)
+![](https://img.shields.io/badge/2024_stars%20⭐-47-yellow)
 ![](https://img.shields.io/badge/2024_days%20completed-22-red)
 
-![](https://img.shields.io/badge/2025_stars%20⭐-45-yellow)
-![](https://img.shields.io/badge/2025_days%20completed-22-red)
+![](https://img.shields.io/badge/2025_stars%20⭐-2-yellow)
+![](https://img.shields.io/badge/2025_days%20completed-1-red)
 
 ## Quick Start
 
