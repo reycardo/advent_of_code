@@ -14,6 +14,9 @@ jobs:
     steps:
       - uses: actions/checkout@v2                # clones your repo
 
+      - name: Pull latest changes                # Updates repo to latest version to avoid conflicts
+        run: git pull origin ${{ github.ref }}
+
       - uses: joblo2213/aoc-badges-action@v3
         with:
           userid: 1439540                          # your user id, see setup on how to obtain
