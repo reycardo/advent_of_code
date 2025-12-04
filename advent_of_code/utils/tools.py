@@ -41,6 +41,12 @@ def get_adjacents(matrix, coords: tuple):
             if is_inside(matrix, adjacent):
                 yield adjacent
 
+def get_adjacents_with_diagonal(matrix, coords: tuple):
+    for r_offset, c_offset in product(range(-1, 2), range(-1, 2)):  # get all offsets
+        if not (r_offset == 0 and c_offset == 0):  # if not own
+            adjacent = (coords[0] + r_offset, coords[1] + c_offset)
+            if is_inside(matrix, adjacent):
+                yield adjacent
 
 def get_txt_files(current_script_path):
     data_paths = {}
