@@ -17,8 +17,8 @@
 ![](https://img.shields.io/badge/2024_stars%20⭐-47-yellow)
 ![](https://img.shields.io/badge/2024_days%20completed-22-red)
 
-![](https://img.shields.io/badge/2025_stars%20⭐-8-yellow)
-![](https://img.shields.io/badge/2025_days%20completed-4-red)
+![](https://img.shields.io/badge/2025_stars%20⭐-10-yellow)
+![](https://img.shields.io/badge/2025_days%20completed-5-red)
 
 ## Quick Start
 
