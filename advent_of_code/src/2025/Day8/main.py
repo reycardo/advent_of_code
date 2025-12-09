@@ -1,5 +1,6 @@
 import math
 import heapq
+import itertools
 from advent_of_code.utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
 from typing import NamedTuple
@@ -21,7 +22,7 @@ class UnionFind:
 
     def find(self, x):
         if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])  # Path compression
+            self.parent[x] = self.find(self.parent[x])
         return self.parent[x]
 
     def union(self, x, y):
@@ -57,16 +58,17 @@ class Puzzle:
         n = len(self.junctions)
         uf = UnionFind(n)
         heap = []
-        for i in range(n):
-            for j in range(i + 1, n):
-                a, b = self.junctions[i], self.junctions[j]
-                dist = ((a.x - b.x) ** 2 + (a.y - b.y) ** 2 + (a.z - b.z) ** 2) ** 0.5
-                heapq.heappush(heap, (dist, i, j))
+        for i, j in itertools.combinations(range(n), 2):
+            a, b = self.junctions[i], self.junctions[j]
+            dist = ((a.x - b.x) ** 2 + (a.y - b.y) ** 2 + (a.z - b.z) ** 2) ** 0.5
+            heapq.heappush(heap, (dist, i, j))
         connections_made = 0
         while (num_connections is None or connections_made < num_connections) and heap:
+            if len(uf.groups()) == 1:
+                return self.junctions[i].x, self.junctions[j].x
             _, i, j = heapq.heappop(heap)
-            if uf.union(i, j):
-                connections_made += 1
+            uf.union(i, j)
+            connections_made += 1
         self.connected_junctions = uf.groups()
 
     def solve(self, part, num_connections: int = None):
@@ -75,7 +77,9 @@ class Puzzle:
             largest_three = sorted([len(s) for s in self.connected_junctions], reverse=True)[:3]
             return math.prod(largest_three)
         if part == 2:
-            pass
+            a, b = self.connect_junctions()
+            return a * b
+
 
 
 
@@ -89,21 +93,21 @@ def main(raw, part, num_connections=None):
 
 def run_tests():
     print("\nRunning Tests:")
-    # assert main(raw=files["test"], part=1, num_connections=10) == 40
-    # assert main(raw=files["test"], part=2) == 6
+    assert main(raw=files["test"], part=1, num_connections=10) == 40
+    assert main(raw=files["test"], part=2) == 25272
 
     # solutions
-    # print("\nRunning Solutions:")
-    # assert main(raw=files["input"], part=1) == 1036
-    # assert main(raw=files["input"], part=2) == 6228
+    print("\nRunning Solutions:")
+    assert main(raw=files["input"], part=1, num_connections=1000) == 352584
+    assert main(raw=files["input"], part=2) == 9617397716
 
 
 def solve():
     print("\nSolving:")
-    answer1 = main(raw=files["input"], part=1)
+    answer1 = main(raw=files["input"], part=1, num_connections=1000)
     print(f"Answer part1: {magenta_color}{answer1}{reset_color}")
-    # answer2 = main(raw=files["input"], part=2)
-    # print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
+    answer2 = main(raw=files["input"], part=2)
+    print(f"Answer part2: {magenta_color}{answer2}{reset_color}")
 
 
 if __name__ == "__main__":
