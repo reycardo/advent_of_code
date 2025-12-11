@@ -1,5 +1,5 @@
 import math
-import heapq
+from scipy.cluster.hierarchy import DisjointSet
 import itertools
 from advent_of_code.utils.tools import get_txt_files, read_input, timing_decorator
 from advent_of_code.utils.colors import magenta_color, reset_color
@@ -15,36 +15,6 @@ class Junction(NamedTuple):
     y: int
     z: int
 
-class UnionFind:
-    def __init__(self, n):
-        self.parent = list(range(n))
-        self.size = [1] * n
-
-    def find(self, x):
-        if self.parent[x] != x:
-            self.parent[x] = self.find(self.parent[x])
-        return self.parent[x]
-
-    def union(self, x, y):
-        xr, yr = self.find(x), self.find(y)
-        if xr == yr:
-            return False
-        # Union by size
-        if self.size[xr] < self.size[yr]:
-            xr, yr = yr, xr
-        self.parent[yr] = xr
-        self.size[xr] += self.size[yr]
-        return True
-
-    def groups(self):
-        roots = {}
-        for i in range(len(self.parent)):
-            r = self.find(i)
-            if r not in roots:
-                roots[r] = set()
-            roots[r].add(i)
-        return list(roots.values())
-
 class Puzzle:
     def __init__(self, text_input):
         self.input = text_input
@@ -54,22 +24,22 @@ class Puzzle:
     def parse_input(self):        
         self.junctions = [Junction(*map(int, row.split(','))) for row in self.input]
 
-    def connect_junctions(self, num_connections: int = None):
-        n = len(self.junctions)
-        uf = UnionFind(n)
-        heap = []
-        for i, j in itertools.combinations(range(n), 2):
-            a, b = self.junctions[i], self.junctions[j]
-            dist = ((a.x - b.x) ** 2 + (a.y - b.y) ** 2 + (a.z - b.z) ** 2) ** 0.5
-            heapq.heappush(heap, (dist, i, j))
+    def connect_junctions(self, num_connections: int = None):        
+        ds = DisjointSet(self.junctions)
+        edges = [
+            (math.dist(a, b), a, b)
+            for a, b in itertools.combinations(self.junctions, 2)
+        ]
+        edges.sort()
         connections_made = 0
-        while (num_connections is None or connections_made < num_connections) and heap:
-            if len(uf.groups()) == 1:
-                return self.junctions[i].x, self.junctions[j].x
-            _, i, j = heapq.heappop(heap)
-            uf.union(i, j)
+        for _, a, b in edges:
+            if num_connections is not None and connections_made >= num_connections:
+                break
+            ds.merge(a, b)
             connections_made += 1
-        self.connected_junctions = uf.groups()
+            if ds.n_subsets == 1:
+                return a.x, b.x
+        self.connected_junctions = ds.subsets()
 
     def solve(self, part, num_connections: int = None):
         if part == 1:

@@ -15,6 +15,7 @@ dependencies = [
     "pre-commit>=4.5.0",
     "pulp>=3.3.0",
     "ruff>=0.14.6",
+    "scipy>=1.16.3",
     "shapely>=2.1.2",
 ]
 
