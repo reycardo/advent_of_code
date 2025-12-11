@@ -33,7 +33,7 @@ class Machine:
         self.joltage_state = [0] * len(self.joltage_requirements)
         self.presses = 0
 
-    def turn_on_machine(self):    
+    def turn_on_machine(self):
 
         target = self.indicator_light_diagram
         visited = set()
@@ -71,7 +71,7 @@ class Machine:
         for i in range(n):
             prob += pulp.lpSum(A[i][j] * x[j] for j in range(m)) == b[i]
 
-        # Solve        
+        # Solve
         result = prob.solve(pulp.PULP_CBC_CMD(msg=False))
         if result != pulp.LpStatusOptimal:
             raise Exception("impossible")
@@ -100,7 +100,7 @@ class Puzzle:
 def main(raw, part):
     text_input = read_input(raw)
     input_parsed = [i if i else "" for i in text_input]
-    puzzle = Puzzle(input_parsed)    
+    puzzle = Puzzle(input_parsed)
     return puzzle.solve(part)
 
 
